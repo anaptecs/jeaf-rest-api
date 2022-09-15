@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- Parent POM contains all general settings for building and releasing of all JEAF projects. -->
+	<parent>
+		<groupId>com.anaptecs.jeaf</groupId>
+		<artifactId>jeaf-module-project-parent</artifactId>
+		<version>1.6.31-SNAPSHOT</version>
+	</parent>
+
+	<groupId>com.anaptecs.jeaf.rest</groupId>
+	<artifactId>jeaf-rest-api-project</artifactId>
+	<version>1.6.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>JEAF REST API Project</name>
+	<description>JEAF REST API contains a set of classes that provide a common abstraction for topics that are connected with REST APIs.</description>
+	<url>https://www.anaptecs.de/jeaf</url>
+
+	<scm>
+		<connection>scm:git:https://bitbucket.org/anaptecs/jeaf-rest-api.git</connection>
+		<developerConnection>scm:git:https://bitbucket.org/anaptecs/jeaf-rest-api.git</developerConnection>
+		<url>https://bitbucket.org/anaptecs/jeaf-rest-api.git</url>
+		<tag>HEAD</tag>
+	</scm>
+	
+	<modules>
+		<module>jeaf-rest-request-executor-api</module>
+	</modules>
+
+</project>
