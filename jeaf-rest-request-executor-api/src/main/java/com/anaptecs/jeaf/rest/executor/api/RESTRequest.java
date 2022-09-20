@@ -3,7 +3,7 @@
  * 
  * Copyright 2004 - 2022. All rights reserved.
  */
-package com.anaptecs.jeaf.rest.api.executor;
+package com.anaptecs.jeaf.rest.executor.api;
 
 import java.util.Collections;
 import java.util.HashMap;

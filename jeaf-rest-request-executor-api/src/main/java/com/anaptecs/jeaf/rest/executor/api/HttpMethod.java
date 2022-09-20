@@ -3,7 +3,7 @@
  *
  * All rights reserved.
  */
-package com.anaptecs.jeaf.rest.api.executor;
+package com.anaptecs.jeaf.rest.executor.api;
 
 /**
  * Enumeration defines the http methods as they are defined by the HTTP standard. For further details please refer to
