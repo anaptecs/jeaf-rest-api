@@ -1,0 +1,8 @@
+clone:
+  depth: full
+pipelines:
+  branches:
+    master:
+      - step:
+          script:
+            - git push --mirror git@github.com:anaptecs/jeaf-rest-api.git
