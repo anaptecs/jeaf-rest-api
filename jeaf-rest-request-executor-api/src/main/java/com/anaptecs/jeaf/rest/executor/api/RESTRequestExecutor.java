@@ -10,20 +10,20 @@ import java.util.Collection;
 /**
  * Interface defines an abstraction for synchronous calls to an REST resource. Idea of this interface is to provide a
  * generic interface for REST calls. Providers of this interface can use any kind of http client to execute the REST
- * request that are received via this interface.
+ * requests that are received via this interface.
  * 
  * Responsibilities of implementations:
  * <ul>
  * <li>Ensure http compatibility of query parameters (they need to be URL encoded)</li>
  * <li>Conversion of body to defined content-type. Support for JSON is mandatory, XML is optional.</li>
  * <li>Proper handling of passed cookies</li>
- * <li>Problem-Handling: For technical problems as well as in case that the REST resource returns a problem, it is
+ * <li>Problem-Handling: For technical problems as well as in case that the REST resource returns a problem. It is
  * expected that a runtime exception will be thrown that represents the occurred problem e.g. using Zalando Problem
  * classes</li>
  * <li>It is expected that implementations make use of circuit breakers and http connection pooling if this is
  * meaningful for the concrete scenarios.</li>
- * <li>It is expected that implementations provide some kind of configuration mechanism that is able to uses the
- * matching configuration based on the passed service class.</li>
+ * <li>It is expected that implementations provide some kind of configuration mechanism that is able to use the matching
+ * configuration based on the passed service class (@see {@link RESTRequest#getServiceClass()}).</li>
  * </ul>
  * 
  * @author JEAF Development Team
