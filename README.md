@@ -1,3 +1,7 @@
+![Latest Version](https://maven-badges.herokuapp.com/maven-central/com.anaptecs.jeaf.rest/jeaf-rest-api-project/badge.svg)
+
+
+
 # JEAF REST API README #
 
 JEAF REST API contains a set of classes that provide a common abstraction for topics that are connected with REST APIs.
