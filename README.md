@@ -14,15 +14,6 @@ For further information please refer to:
 * Javadocs
   * [JEAF REST Request Executor API](https://javadoc.io/doc/com.anaptecs.jeaf.rest/jeaf-rest-request-executor-api)
 
-## How to use it ##
-
-
-```
-git status
-git add
-git commit
-```
-
 ## How do I get set up? ##
 
 * Create a clone of this repository on your local machine.
