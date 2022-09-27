@@ -5,9 +5,12 @@
  */
 package com.anaptecs.jeaf.rest.executor.api;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Class defines a generic REST request that is used as an abstraction of for concrete implementations together with
@@ -38,9 +41,10 @@ public class RESTRequest {
   private final Map<String, String> headers;
 
   /**
-   * Query params that belong to the request.
+   * Query params that belong to the request. Please be aware that for query params it is supported to have more than
+   * one value for it.
    */
-  private final Map<String, String> queryParams;
+  private final Map<String, Set<String>> queryParams;
 
   /**
    * Cookies that belong to the request
@@ -59,6 +63,22 @@ public class RESTRequest {
    * to be done as well as setting the required standard header fields.
    */
   private final ContentType contentType;
+
+  /**
+   * Method creates new builder. All mandatory parameters already have to be passed here.
+   * 
+   * @param pServiceClass Based on the service class a REST executor ({@link RESTRequestExecutor}) is able to resolve
+   * the URL of the REST resource that should be called as well as all other configuration parameters. The parameter
+   * must not be null.
+   * @param pHttpMethod Http method that should be used to execute the REST call. The parameter must not be null.
+   * @param pContentType Content type that should be used for communication with the REST resource. Please be aware that
+   * we do not distinguish content type between request and response. This means that based on this attribute body
+   * conversion has to be done as well as setting the required standard header fields. The parameter must not be null.
+   * @return {@link Builder} Created builder. The method never returns null.
+   */
+  public static Builder builder( Class<?> pServiceClass, HttpMethod pHttpMethod, ContentType pContentType ) {
+    return new Builder(pServiceClass, pHttpMethod, pContentType);
+  }
 
   /**
    * Initialize object.
@@ -99,7 +119,7 @@ public class RESTRequest {
   /**
    * Method returns the resource path for the request.
    * 
-   * @return {@link String} Resopurce path that should be called. The method never returns null.
+   * @return {@link String} Resource path that should be called. The method never returns null.
    */
   public String getPath( ) {
     return path;
@@ -115,11 +135,12 @@ public class RESTRequest {
   }
 
   /**
-   * Method returns the query parameters that should be sent as part of the request.
+   * Method returns the query parameters that should be sent as part of the request. Please be aware that for query
+   * params it is supported to have more than one value for it.
    * 
    * @return {@link Map} All query parameters that should be sent as part of the request. The method never returns null.
    */
-  public Map<String, String> getQueryParams( ) {
+  public Map<String, Set<String>> getQueryParams( ) {
     return Collections.unmodifiableMap(queryParams);
   }
 
@@ -175,7 +196,7 @@ public class RESTRequest {
     /**
      * @see RESTRequest#queryParams
      */
-    private final Map<String, String> queryParams = new HashMap<>();
+    private final Map<String, Set<String>> queryParams = new HashMap<>();
 
     /**
      * @see RESTRequest#cookies
@@ -191,23 +212,6 @@ public class RESTRequest {
      * @see RESTRequest#contentType
      */
     private final ContentType contentType;
-
-    /**
-     * Method creates new builder. All mandatory parameters already have to be passed here.
-     * 
-     * @param pServiceClass Based on the service class a REST executor ({@link RESTRequestExecutor}) is able to resolve
-     * the URL of the REST resource that should be called as well as all other configuration parameters. The parameter
-     * must not be null.
-     * @param pHttpMethod Http method that should be used to execute the REST call. The parameter must not be null.
-     * @param pContentType Content type that should be used for communication with the REST resource. Please be aware
-     * that we do not distinguish content type between request and response. This means that based on this attribute
-     * body conversion has to be done as well as setting the required standard header fields. The parameter must not be
-     * null.
-     * @return {@link Builder} Created builder. The method never returns null.
-     */
-    public static Builder newBuilder( Class<?> pServiceClass, HttpMethod pHttpMethod, ContentType pContentType ) {
-      return new Builder(pServiceClass, pHttpMethod, pContentType);
-    }
 
     /**
      * Initialize object.
@@ -270,16 +274,62 @@ public class RESTRequest {
     }
 
     /**
-     * Method set the request parameter with the passed name. May be already existing query parameters with the same
-     * name will be overwritten.
+     * Method adds the request parameter with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
      * 
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
      * @param pQueryParamValue Value of the query parameter. The parameter must not be null.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
-    public Builder setQueryParam( String pQueryParamName, String pQueryParamValue ) {
+    public Builder addQueryParam( String pQueryParamName, String pQueryParamValue ) {
       if (pQueryParamName != null && pQueryParamValue != null) {
-        queryParams.put(pQueryParamName, pQueryParamValue);
+        Set<String> lValues = queryParams.get(pQueryParamName);
+        if (lValues == null) {
+          lValues = new HashSet<>();
+          queryParams.put(pQueryParamName, lValues);
+        }
+
+        lValues.add(pQueryParamValue);
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException("Parameter 'pQueryParamName' and 'pQueryParamValue' must not be null.");
+      }
+    }
+
+    /**
+     * Method adds the request parameters with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder addQueryParams( String pQueryParamName, Collection<String> pQueryParamValues ) {
+      if (pQueryParamName != null && pQueryParamValues != null) {
+        for (String lNextValue : pQueryParamValues) {
+          this.addQueryParam(pQueryParamName, lNextValue);
+        }
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException("Parameter 'pQueryParamName' and 'pQueryParamValue' must not be null.");
+      }
+    }
+
+    /**
+     * Method adds the request parameters with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder addQueryParams( String pQueryParamName, String... pQueryParamValues ) {
+      if (pQueryParamName != null && pQueryParamValues != null) {
+        for (String lNextValue : pQueryParamValues) {
+          this.addQueryParam(pQueryParamName, lNextValue);
+        }
         return this;
       }
       else {
