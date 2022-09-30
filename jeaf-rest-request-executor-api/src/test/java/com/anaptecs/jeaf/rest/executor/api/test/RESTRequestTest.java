@@ -5,9 +5,13 @@
  */
 package com.anaptecs.jeaf.rest.executor.api.test;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -85,7 +89,7 @@ public class RESTRequestTest {
     lBuilder.addQueryParam("query2", "???");
 
     lRequest = lBuilder.build();
-
+    assertEquals("/", lRequest.getPath());
     lQueryParams = lRequest.getQueryParams();
     assertEquals(2, lQueryParams.size());
     lQueryParam = lQueryParams.get("query1");
@@ -100,5 +104,127 @@ public class RESTRequestTest {
     assertEquals(1, lQueryParam.size());
     assertTrue(lQueryParam.contains("???"));
 
+    // Test null handling
+    try {
+      RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).addQueryParam("q", (String) null);
+      fail();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals("Parameters 'pQueryParamName' and 'pQueryParamValue' must not be null.", e.getMessage());
+    }
+
+    try {
+      RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).addQueryParams("q", (String[]) null);
+      fail();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals("Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null.", e.getMessage());
+    }
+
+    try {
+      RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).addQueryParams("q",
+          (Collection<String>) null);
+      fail();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals("Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null.", e.getMessage());
+    }
   }
+
+  @Test
+  void testBody( ) {
+    Builder lBuilder = RESTRequest.builder(Integer.class, HttpMethod.POST, ContentType.XML);
+    assertNotNull(lBuilder.setPath("/this/is/my/path"));
+    assertNotNull(lBuilder.setBody(Arrays.asList("Hello", "World", "!")));
+    RESTRequest lRequest = lBuilder.build();
+    assertEquals("/this/is/my/path", lRequest.getPath());
+    assertEquals(Arrays.asList("Hello", "World", "!"), lRequest.getBody());
+
+    // try to set null as path
+    try {
+      RESTRequest.builder(Integer.class, HttpMethod.POST, ContentType.XML).setPath(null);
+      fail();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals("Parameter 'pPath' must not be null.", e.getMessage());
+    }
+  }
+
+  @Test
+  void testCookie( ) {
+    Builder lBuilder = RESTRequest.builder(Integer.class, HttpMethod.POST, ContentType.XML);
+    assertNotNull(lBuilder.setCookie("myCookie", "myCookieValue"));
+    RESTRequest lRequest = lBuilder.build();
+    assertEquals(1, lRequest.getCookies().size());
+    assertEquals("myCookieValue", lRequest.getCookies().get("myCookie"));
+
+    // Test null handling
+    lBuilder = RESTRequest.builder(Integer.class, HttpMethod.POST, ContentType.XML);
+    assertNotNull(lBuilder.setCookie("myCookie", null));
+    lRequest = lBuilder.build();
+    assertEquals(1, lRequest.getCookies().size());
+    assertEquals(null, lRequest.getCookies().get("myCookie"));
+
+    try {
+      RESTRequest.builder(Integer.class, HttpMethod.POST, ContentType.XML).setCookie(null, "Hello");
+      fail();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals("Parameter 'pCookieName' must not be null.", e.getMessage());
+    }
+  }
+
+  @Test
+  void testHeader( ) {
+    Builder lBuilder = RESTRequest.builder(Integer.class, HttpMethod.POST, ContentType.XML);
+    assertNotNull(lBuilder.setHeader("My-Header", "myHeaderValue"));
+    RESTRequest lRequest = lBuilder.build();
+    assertEquals(1, lRequest.getHeaders().size());
+    assertEquals("myHeaderValue", lRequest.getHeaders().get("My-Header"));
+
+    // Test null handling
+    lBuilder = RESTRequest.builder(Integer.class, HttpMethod.POST, ContentType.XML);
+    assertNotNull(lBuilder.setHeader("My-Header", null));
+    lRequest = lBuilder.build();
+    assertEquals(1, lRequest.getHeaders().size());
+    assertEquals(null, lRequest.getHeaders().get("My-Header"));
+
+    try {
+      RESTRequest.builder(Integer.class, HttpMethod.POST, ContentType.XML).setHeader(null, "value");
+      fail();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals("Parameter 'pHeaderName' must not be null.", e.getMessage());
+    }
+
+    // Test general error handling
+    try {
+      RESTRequest.builder(null, HttpMethod.POST, ContentType.XML);
+      fail();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals("Parameters 'pServiceClass', 'pHttpMethod' and 'pContentType' must not be null.", e.getMessage());
+    }
+    try {
+      RESTRequest.builder(Integer.class, null, ContentType.XML);
+      fail();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals("Parameters 'pServiceClass', 'pHttpMethod' and 'pContentType' must not be null.", e.getMessage());
+    }
+    try {
+      RESTRequest.builder(Integer.class, HttpMethod.POST, null);
+      fail();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals("Parameters 'pServiceClass', 'pHttpMethod' and 'pContentType' must not be null.", e.getMessage());
+    }
+  }
+
+  @Test
+  void testContentType( ) {
+    assertEquals("application/json", ContentType.JSON.getMimeType());
+    assertEquals("application/xml", ContentType.XML.getMimeType());
+  }
+
 }

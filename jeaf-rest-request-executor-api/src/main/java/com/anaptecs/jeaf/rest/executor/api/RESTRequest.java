@@ -293,7 +293,7 @@ public class RESTRequest {
         return this;
       }
       else {
-        throw new IllegalArgumentException("Parameter 'pQueryParamName' and 'pQueryParamValue' must not be null.");
+        throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValue' must not be null.");
       }
     }
 
@@ -313,7 +313,7 @@ public class RESTRequest {
         return this;
       }
       else {
-        throw new IllegalArgumentException("Parameter 'pQueryParamName' and 'pQueryParamValue' must not be null.");
+        throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null.");
       }
     }
 
@@ -333,7 +333,7 @@ public class RESTRequest {
         return this;
       }
       else {
-        throw new IllegalArgumentException("Parameter 'pQueryParamName' and 'pQueryParamValue' must not be null.");
+        throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null.");
       }
     }
 
