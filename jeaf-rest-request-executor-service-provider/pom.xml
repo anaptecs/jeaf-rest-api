@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.anaptecs.jeaf.rest</groupId>
 		<artifactId>jeaf-rest-api-project</artifactId>
-		<version>1.6.1-RC01</version>
+		<version>1.6.1-RC02-SNAPSHOT</version>
 	</parent>
 
 	<name>JEAF REST Request Executor Service Provider</name>
@@ -15,7 +15,7 @@
 		<dependency>
 			<groupId>com.anaptecs.jeaf.rest</groupId>
 			<artifactId>jeaf-rest-request-executor-api</artifactId>
-			<version>1.6.1-RC01</version>
+			<version>1.6.1-RC02-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
