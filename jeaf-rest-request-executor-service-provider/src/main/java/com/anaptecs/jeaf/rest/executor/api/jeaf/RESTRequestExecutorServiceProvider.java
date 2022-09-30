@@ -13,5 +13,5 @@ import com.anaptecs.jeaf.rest.executor.api.RESTRequestExecutor;
  * 
  * @author JEAF Development Team
  */
-public interface RESTRequestExecutorServiceProvider extends ServiceProvider {
+public interface RESTRequestExecutorServiceProvider extends RESTRequestExecutor, ServiceProvider {
 }
