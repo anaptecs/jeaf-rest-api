@@ -24,8 +24,13 @@
 		<tag>HEAD</tag>
 	</scm>
 	
+	<properties>
+		<jeaf.core.api.version>1.6.19</jeaf.core.api.version>
+	</properties>
+	
 	<modules>
 		<module>jeaf-rest-request-executor-api</module>
+		<module>jeaf-rest-request-executor-service-provider</module>
 	</modules>
 
 </project>
