@@ -114,7 +114,31 @@ public class RESTRequestTest {
     }
 
     try {
+      RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).addQueryParam(null, "Hello");
+      fail();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals("Parameters 'pQueryParamName' and 'pQueryParamValue' must not be null.", e.getMessage());
+    }
+
+    try {
       RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).addQueryParams("q", (String[]) null);
+      fail();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals("Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null.", e.getMessage());
+    }
+
+    try {
+      RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).addQueryParams(null, "Hello", "World");
+      fail();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals("Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null.", e.getMessage());
+    }
+
+    try {
+      RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).addQueryParams(null, lStrings);
       fail();
     }
     catch (IllegalArgumentException e) {
