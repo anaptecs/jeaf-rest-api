@@ -283,12 +283,7 @@ public class RESTRequest {
      */
     public Builder addQueryParam( String pQueryParamName, String pQueryParamValue ) {
       if (pQueryParamName != null && pQueryParamValue != null) {
-        Set<String> lValues = queryParams.get(pQueryParamName);
-        if (lValues == null) {
-          lValues = new HashSet<>();
-          queryParams.put(pQueryParamName, lValues);
-        }
-
+        Set<String> lValues = queryParams.computeIfAbsent(pQueryParamName, k -> new HashSet<>());
         lValues.add(pQueryParamValue);
         return this;
       }
