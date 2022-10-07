@@ -26,7 +26,7 @@ public interface CompositeTypeConverter {
    * @return String String representation of the passed object. The method must not return null. It is expected that the
    * returned string can be used as part of URLs.
    */
-  String serilializeObject( Object pObject, List<Class<?>> pSerializedClasses );
+  String serializeObject( Object pObject, List<Class<?>> pSerializedClasses );
 
   /**
    * Method deserializes the passed string into an composite date type object of the passed type.
@@ -36,7 +36,7 @@ public interface CompositeTypeConverter {
    * @param pSerializedClasses List of all classes that were involved in the serialization process of the passed object.
    * The list of involved classes must be complete and must not change its content or order between serialization and
    * deserialization.
-   * @return T Object rerpresentation of the passed string. The method never returns null.
+   * @return T Object representation of the passed string. The method never returns null.
    */
   <T> T deserializeObject( String pSerializedObject, Class<T> pResultType, List<Class<?>> pSerializedClasses );
 }
