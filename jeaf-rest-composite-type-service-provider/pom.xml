@@ -7,10 +7,22 @@
 		<version>1.6.1-RC03-SNAPSHOT</version>
 	</parent>
 
-	<name>JEAF REST Composite Type API</name>
-	<artifactId>jeaf-rest-composite-type-api</artifactId>
+	<name>JEAF REST Composite Type Service Provider</name>
+	<artifactId>jeaf-rest-composite-type-service-provider</artifactId>
 	<packaging>jar</packaging>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.anaptecs.jeaf.rest</groupId>
+			<artifactId>jeaf-rest-composite-type-api</artifactId>
+			<version>1.6.1-RC03-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.anaptecs.jeaf.core</groupId>
+			<artifactId>jeaf-core-api</artifactId>
+			<version>${jeaf.core.api.version}</version>
+		</dependency>
+		
 	</dependencies>
 </project>
