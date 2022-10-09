@@ -8,7 +8,7 @@ package com.anaptecs.jeaf.rest.composite.api;
 import java.util.List;
 
 /**
- * Interface defines operations of a composite type converters. Such a converter is responsible to provide a mechanism
+ * Interface defines operations of a composite type converter. Such a converter is responsible to provide a mechanism
  * where composite data types can be converted from an object into a string representation and vice versa.
  * 
  * Based on which mechanism the conversion is done is an implementation detail.
@@ -23,8 +23,8 @@ public interface CompositeTypeConverter {
    * @param pSerializedClasses List of all classes that are involved in the serialization process of the passed object.
    * The list of involved classes must be complete and must not change its content or order between serialization and
    * deserialization.
-   * @return String String representation of the passed object. The method must not return null. It is expected that the
-   * returned string can be used as part of URLs.
+   * @return {@link String} String representation of the passed object. The method must not return null. It is expected
+   * that the returned string can be used as part of URLs.
    */
   String serializeObject( Object pObject, List<Class<?>> pSerializedClasses );
 
