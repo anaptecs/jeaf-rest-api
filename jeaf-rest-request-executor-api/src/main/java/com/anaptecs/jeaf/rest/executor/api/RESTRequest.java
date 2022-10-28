@@ -274,6 +274,158 @@ public class RESTRequest {
     }
 
     /**
+     * Method sets the http request header with the passed name. May be already existing header with the same name will
+     * be overwritten.
+     * 
+     * @param pHeaderName Name of the header. The parameter must not be null.
+     * @param pHeaderValue Header value that should be set. The parameter may be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder setHeader( String pHeaderName, Boolean pHeaderValue ) {
+      if (pHeaderName != null) {
+        String lHeaderValueAsString = pHeaderValue != null ? pHeaderValue.toString() : null;
+        headers.put(pHeaderName, lHeaderValueAsString);
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException("Parameter 'pHeaderName' must not be null.");
+      }
+    }
+
+    /**
+     * Method sets the http request header with the passed name. May be already existing header with the same name will
+     * be overwritten.
+     * 
+     * @param pHeaderName Name of the header. The parameter must not be null.
+     * @param pHeaderValue Header value that should be set. The parameter may be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder setHeader( String pHeaderName, Byte pHeaderValue ) {
+      if (pHeaderName != null) {
+        String lHeaderValueAsString = pHeaderValue != null ? pHeaderValue.toString() : null;
+        headers.put(pHeaderName, lHeaderValueAsString);
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException("Parameter 'pHeaderName' must not be null.");
+      }
+    }
+
+    /**
+     * Method sets the http request header with the passed name. May be already existing header with the same name will
+     * be overwritten.
+     * 
+     * @param pHeaderName Name of the header. The parameter must not be null.
+     * @param pHeaderValue Header value that should be set. The parameter may be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder setHeader( String pHeaderName, Short pHeaderValue ) {
+      if (pHeaderName != null) {
+        String lHeaderValueAsString = pHeaderValue != null ? pHeaderValue.toString() : null;
+        headers.put(pHeaderName, lHeaderValueAsString);
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException("Parameter 'pHeaderName' must not be null.");
+      }
+    }
+
+    /**
+     * Method sets the http request header with the passed name. May be already existing header with the same name will
+     * be overwritten.
+     * 
+     * @param pHeaderName Name of the header. The parameter must not be null.
+     * @param pHeaderValue Header value that should be set. The parameter may be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder setHeader( String pHeaderName, Integer pHeaderValue ) {
+      if (pHeaderName != null) {
+        String lHeaderValueAsString = pHeaderValue != null ? pHeaderValue.toString() : null;
+        headers.put(pHeaderName, lHeaderValueAsString);
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException("Parameter 'pHeaderName' must not be null.");
+      }
+    }
+
+    /**
+     * Method sets the http request header with the passed name. May be already existing header with the same name will
+     * be overwritten.
+     * 
+     * @param pHeaderName Name of the header. The parameter must not be null.
+     * @param pHeaderValue Header value that should be set. The parameter may be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder setHeader( String pHeaderName, Long pHeaderValue ) {
+      if (pHeaderName != null) {
+        String lHeaderValueAsString = pHeaderValue != null ? pHeaderValue.toString() : null;
+        headers.put(pHeaderName, lHeaderValueAsString);
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException("Parameter 'pHeaderName' must not be null.");
+      }
+    }
+
+    /**
+     * Method sets the http request header with the passed name. May be already existing header with the same name will
+     * be overwritten.
+     * 
+     * @param pHeaderName Name of the header. The parameter must not be null.
+     * @param pHeaderValue Header value that should be set. The parameter may be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder setHeader( String pHeaderName, Float pHeaderValue ) {
+      if (pHeaderName != null) {
+        String lHeaderValueAsString = pHeaderValue != null ? pHeaderValue.toString() : null;
+        headers.put(pHeaderName, lHeaderValueAsString);
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException("Parameter 'pHeaderName' must not be null.");
+      }
+    }
+
+    /**
+     * Method sets the http request header with the passed name. May be already existing header with the same name will
+     * be overwritten.
+     * 
+     * @param pHeaderName Name of the header. The parameter must not be null.
+     * @param pHeaderValue Header value that should be set. The parameter may be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder setHeader( String pHeaderName, Double pHeaderValue ) {
+      if (pHeaderName != null) {
+        String lHeaderValueAsString = pHeaderValue != null ? pHeaderValue.toString() : null;
+        headers.put(pHeaderName, lHeaderValueAsString);
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException("Parameter 'pHeaderName' must not be null.");
+      }
+    }
+
+    /**
+     * Method sets the http request header with the passed name. May be already existing header with the same name will
+     * be overwritten.
+     * 
+     * @param pHeaderName Name of the header. The parameter must not be null.
+     * @param pHeaderValue Header value that should be set. The parameter may be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder setHeader( String pHeaderName, Character pHeaderValue ) {
+      if (pHeaderName != null) {
+        String lHeaderValueAsString = pHeaderValue != null ? pHeaderValue.toString() : null;
+        headers.put(pHeaderName, lHeaderValueAsString);
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException("Parameter 'pHeaderName' must not be null.");
+      }
+    }
+
+    /**
      * Method adds the request parameter with the passed name. May be already existing query parameters with the same
      * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
      * 

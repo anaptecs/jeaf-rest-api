@@ -208,7 +208,7 @@ public class RESTRequestTest {
 
     // Test null handling
     lBuilder = RESTRequest.builder(Integer.class, HttpMethod.POST, ContentType.XML);
-    assertNotNull(lBuilder.setHeader("My-Header", null));
+    assertNotNull(lBuilder.setHeader("My-Header", (String) null));
     lRequest = lBuilder.build();
     assertEquals(1, lRequest.getHeaders().size());
     assertEquals(null, lRequest.getHeaders().get("My-Header"));
@@ -242,6 +242,115 @@ public class RESTRequestTest {
     }
     catch (IllegalArgumentException e) {
       assertEquals("Parameters 'pServiceClass', 'pHttpMethod' and 'pContentType' must not be null.", e.getMessage());
+    }
+
+    // Test other primitive header types
+    lBuilder = RESTRequest.builder(Integer.class, HttpMethod.PATCH, ContentType.JSON);
+    assertEquals(lBuilder, lBuilder.setHeader("boolean", Boolean.TRUE));
+    assertEquals(lBuilder, lBuilder.setHeader("byte", Byte.valueOf((byte) 47)));
+    assertEquals(lBuilder, lBuilder.setHeader("short", Short.valueOf((short) 241)));
+    assertEquals(lBuilder, lBuilder.setHeader("integer", Integer.valueOf((int) 47110815)));
+    assertEquals(lBuilder, lBuilder.setHeader("long", Long.valueOf((long) 123456789)));
+    assertEquals(lBuilder, lBuilder.setHeader("double", Double.valueOf((double) 123456789.1234)));
+    assertEquals(lBuilder, lBuilder.setHeader("float", Float.valueOf((float) 1239.1234)));
+    assertEquals(lBuilder, lBuilder.setHeader("character", Character.valueOf('A')));
+
+    lRequest = lBuilder.build();
+    assertEquals(Integer.class, lRequest.getServiceClass());
+    assertEquals(HttpMethod.PATCH, lRequest.getHttpMethod());
+    assertEquals(ContentType.JSON, lRequest.getContentType());
+    Map<String, String> lHeaders = lRequest.getHeaders();
+    assertEquals("true", lHeaders.get("boolean"));
+    assertEquals("47", lHeaders.get("byte"));
+    assertEquals("241", lHeaders.get("short"));
+    assertEquals("47110815", lHeaders.get("integer"));
+    assertEquals("123456789", lHeaders.get("long"));
+    assertEquals("1.234567891234E8", lHeaders.get("double"));
+    assertEquals("1239.1234", lHeaders.get("float"));
+    assertEquals("A", lHeaders.get("character"));
+
+    // Test null handling for header values
+    lBuilder = RESTRequest.builder(Integer.class, HttpMethod.PATCH, ContentType.JSON);
+    assertEquals(lBuilder, lBuilder.setHeader("boolean", (Boolean) null));
+    assertEquals(lBuilder, lBuilder.setHeader("byte", (Byte) null));
+    assertEquals(lBuilder, lBuilder.setHeader("short", (Short) null));
+    assertEquals(lBuilder, lBuilder.setHeader("integer", (Integer) null));
+    assertEquals(lBuilder, lBuilder.setHeader("long", (Long) null));
+    assertEquals(lBuilder, lBuilder.setHeader("double", (Double) null));
+    assertEquals(lBuilder, lBuilder.setHeader("float", (Float) null));
+    assertEquals(lBuilder, lBuilder.setHeader("character", (Character) null));
+
+    lRequest = lBuilder.build();
+    assertEquals(Integer.class, lRequest.getServiceClass());
+    assertEquals(HttpMethod.PATCH, lRequest.getHttpMethod());
+    assertEquals(ContentType.JSON, lRequest.getContentType());
+    lHeaders = lRequest.getHeaders();
+    assertEquals(null, lHeaders.get("boolean"));
+    assertEquals(null, lHeaders.get("byte"));
+    assertEquals(null, lHeaders.get("short"));
+    assertEquals(null, lHeaders.get("integer"));
+    assertEquals(null, lHeaders.get("long"));
+    assertEquals(null, lHeaders.get("double"));
+    assertEquals(null, lHeaders.get("float"));
+    assertEquals(null, lHeaders.get("character"));
+
+    // Test null handling
+    lBuilder = RESTRequest.builder(Integer.class, HttpMethod.PATCH, ContentType.JSON);
+    try {
+      lBuilder.setHeader(null, (Boolean) null);
+      fail();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals("Parameter 'pHeaderName' must not be null.", e.getMessage());
+    }
+    try {
+      lBuilder.setHeader(null, (Byte) null);
+      fail();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals("Parameter 'pHeaderName' must not be null.", e.getMessage());
+    }
+    try {
+      lBuilder.setHeader(null, (Short) null);
+      fail();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals("Parameter 'pHeaderName' must not be null.", e.getMessage());
+    }
+    try {
+      lBuilder.setHeader(null, (Integer) null);
+      fail();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals("Parameter 'pHeaderName' must not be null.", e.getMessage());
+    }
+    try {
+      lBuilder.setHeader(null, (Long) null);
+      fail();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals("Parameter 'pHeaderName' must not be null.", e.getMessage());
+    }
+    try {
+      lBuilder.setHeader(null, (Double) null);
+      fail();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals("Parameter 'pHeaderName' must not be null.", e.getMessage());
+    }
+    try {
+      lBuilder.setHeader(null, (Float) null);
+      fail();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals("Parameter 'pHeaderName' must not be null.", e.getMessage());
+    }
+    try {
+      lBuilder.setHeader(null, (Character) null);
+      fail();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals("Parameter 'pHeaderName' must not be null.", e.getMessage());
     }
   }
 
