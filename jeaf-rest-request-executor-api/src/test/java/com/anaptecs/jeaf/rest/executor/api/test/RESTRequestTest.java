@@ -39,7 +39,7 @@ public class RESTRequestTest {
     // Test handling of multiple value for one query param
     lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON);
     lBuilder.addQueryParam("query1", "Hello");
-    lBuilder.addQueryParams("query1", "World", "!");
+    lBuilder.addQueryParam("query1", "World", "!");
 
     lRequest = lBuilder.build();
     assertEquals(String.class, lRequest.getServiceClass());
@@ -59,7 +59,7 @@ public class RESTRequestTest {
 
     lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON);
     lBuilder.addQueryParam("query1", "Hello");
-    lBuilder.addQueryParams("query1", "World", "!");
+    lBuilder.addQueryParam("query1", "World", "!");
     lBuilder.addQueryParam("query1", "Hello");
     lBuilder.addQueryParam("query2", "???");
 
@@ -80,12 +80,12 @@ public class RESTRequestTest {
     // Test handling of multiple ways to add data
     lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON);
     lBuilder.addQueryParam("query1", "Hello");
-    lBuilder.addQueryParams("query1", "World", "!");
+    lBuilder.addQueryParam("query1", "World", "!");
     lBuilder.addQueryParam("query1", "Hello");
     Set<String> lStrings = new HashSet<>();
     lStrings.add("Wonderful");
     lStrings.add("world");
-    lBuilder.addQueryParams("query1", lStrings);
+    lBuilder.addQueryParam("query1", lStrings);
     lBuilder.addQueryParam("query2", "???");
 
     lRequest = lBuilder.build();
@@ -122,7 +122,7 @@ public class RESTRequestTest {
     }
 
     try {
-      RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).addQueryParams("q", (String[]) null);
+      RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).addQueryParam("q", (String[]) null);
       fail();
     }
     catch (IllegalArgumentException e) {
@@ -130,7 +130,7 @@ public class RESTRequestTest {
     }
 
     try {
-      RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).addQueryParams(null, "Hello", "World");
+      RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).addQueryParam(null, "Hello", "World");
       fail();
     }
     catch (IllegalArgumentException e) {
@@ -138,7 +138,7 @@ public class RESTRequestTest {
     }
 
     try {
-      RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).addQueryParams(null, lStrings);
+      RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).addQueryParam(null, lStrings);
       fail();
     }
     catch (IllegalArgumentException e) {
@@ -146,8 +146,7 @@ public class RESTRequestTest {
     }
 
     try {
-      RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).addQueryParams("q",
-          (Collection<String>) null);
+      RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).addQueryParam("q", (Collection<String>) null);
       fail();
     }
     catch (IllegalArgumentException e) {

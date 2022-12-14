@@ -435,8 +435,160 @@ public class RESTRequest {
      */
     public Builder addQueryParam( String pQueryParamName, String pQueryParamValue ) {
       if (pQueryParamName != null && pQueryParamValue != null) {
-        Set<String> lValues = queryParams.computeIfAbsent(pQueryParamName, k -> new HashSet<>());
+        Set<String> lValues = getQueryParamSet(pQueryParamName);
         lValues.add(pQueryParamValue);
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValue' must not be null.");
+      }
+    }
+
+    /**
+     * Method adds the request parameter with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValue Value of the query parameter. The parameter must not be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder addQueryParam( String pQueryParamName, Boolean pQueryParamValue ) {
+      if (pQueryParamName != null && pQueryParamValue != null) {
+        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
+        lValues.add(pQueryParamValue.toString());
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValue' must not be null.");
+      }
+    }
+
+    /**
+     * Method adds the request parameter with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValue Value of the query parameter. The parameter must not be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder addQueryParam( String pQueryParamName, Byte pQueryParamValue ) {
+      if (pQueryParamName != null && pQueryParamValue != null) {
+        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
+        lValues.add(pQueryParamValue.toString());
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValue' must not be null.");
+      }
+    }
+
+    /**
+     * Method adds the request parameter with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValue Value of the query parameter. The parameter must not be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder addQueryParam( String pQueryParamName, Short pQueryParamValue ) {
+      if (pQueryParamName != null && pQueryParamValue != null) {
+        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
+        lValues.add(pQueryParamValue.toString());
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValue' must not be null.");
+      }
+    }
+
+    /**
+     * Method adds the request parameter with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValue Value of the query parameter. The parameter must not be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder addQueryParam( String pQueryParamName, Integer pQueryParamValue ) {
+      if (pQueryParamName != null && pQueryParamValue != null) {
+        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
+        lValues.add(pQueryParamValue.toString());
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValue' must not be null.");
+      }
+    }
+
+    /**
+     * Method adds the request parameter with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValue Value of the query parameter. The parameter must not be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder addQueryParam( String pQueryParamName, Long pQueryParamValue ) {
+      if (pQueryParamName != null && pQueryParamValue != null) {
+        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
+        lValues.add(pQueryParamValue.toString());
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValue' must not be null.");
+      }
+    }
+
+    /**
+     * Method adds the request parameter with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValue Value of the query parameter. The parameter must not be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder addQueryParam( String pQueryParamName, Float pQueryParamValue ) {
+      if (pQueryParamName != null && pQueryParamValue != null) {
+        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
+        lValues.add(pQueryParamValue.toString());
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValue' must not be null.");
+      }
+    }
+
+    /**
+     * Method adds the request parameter with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValue Value of the query parameter. The parameter must not be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder addQueryParam( String pQueryParamName, Double pQueryParamValue ) {
+      if (pQueryParamName != null && pQueryParamValue != null) {
+        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
+        lValues.add(pQueryParamValue.toString());
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValue' must not be null.");
+      }
+    }
+
+    /**
+     * Method adds the request parameter with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValue Value of the query parameter. The parameter must not be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder addQueryParam( String pQueryParamName, Character pQueryParamValue ) {
+      if (pQueryParamName != null && pQueryParamValue != null) {
+        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
+        lValues.add(pQueryParamValue.toString());
         return this;
       }
       else {
@@ -452,10 +604,13 @@ public class RESTRequest {
      * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
-    public Builder addQueryParams( String pQueryParamName, Collection<String> pQueryParamValues ) {
+    public Builder addQueryParam( String pQueryParamName, Collection<?> pQueryParamValues ) {
       if (pQueryParamName != null && pQueryParamValues != null) {
-        for (String lNextValue : pQueryParamValues) {
-          this.addQueryParam(pQueryParamName, lNextValue);
+        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
+        for (Object lNextValue : pQueryParamValues) {
+          if (lNextValue != null) {
+            lValues.add(lNextValue.toString());
+          }
         }
         return this;
       }
@@ -472,10 +627,179 @@ public class RESTRequest {
      * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
-    public Builder addQueryParams( String pQueryParamName, String... pQueryParamValues ) {
+    public Builder addQueryParam( String pQueryParamName, String... pQueryParamValues ) {
       if (pQueryParamName != null && pQueryParamValues != null) {
+        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
         for (String lNextValue : pQueryParamValues) {
-          this.addQueryParam(pQueryParamName, lNextValue);
+          lValues.add(lNextValue);
+        }
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null.");
+      }
+    }
+
+    /**
+     * Method adds the request parameters with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder addQueryParam( String pQueryParamName, boolean... pQueryParamValues ) {
+      if (pQueryParamName != null && pQueryParamValues != null) {
+        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
+        for (boolean lNextValue : pQueryParamValues) {
+          lValues.add(String.valueOf(lNextValue));
+        }
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null.");
+      }
+    }
+
+    /**
+     * Method adds the request parameters with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder addQueryParam( String pQueryParamName, byte... pQueryParamValues ) {
+      if (pQueryParamName != null && pQueryParamValues != null) {
+        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
+        for (byte lNextValue : pQueryParamValues) {
+          lValues.add(String.valueOf(lNextValue));
+        }
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null.");
+      }
+    }
+
+    /**
+     * Method adds the request parameters with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder addQueryParam( String pQueryParamName, short... pQueryParamValues ) {
+      if (pQueryParamName != null && pQueryParamValues != null) {
+        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
+        for (short lNextValue : pQueryParamValues) {
+          lValues.add(String.valueOf(lNextValue));
+        }
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null.");
+      }
+    }
+
+    /**
+     * Method adds the request parameters with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder addQueryParam( String pQueryParamName, int... pQueryParamValues ) {
+      if (pQueryParamName != null && pQueryParamValues != null) {
+        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
+        for (int lNextValue : pQueryParamValues) {
+          lValues.add(String.valueOf(lNextValue));
+        }
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null.");
+      }
+    }
+
+    /**
+     * Method adds the request parameters with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder addQueryParam( String pQueryParamName, long... pQueryParamValues ) {
+      if (pQueryParamName != null && pQueryParamValues != null) {
+        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
+        for (long lNextValue : pQueryParamValues) {
+          lValues.add(String.valueOf(lNextValue));
+        }
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null.");
+      }
+    }
+
+    /**
+     * Method adds the request parameters with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder addQueryParam( String pQueryParamName, float... pQueryParamValues ) {
+      if (pQueryParamName != null && pQueryParamValues != null) {
+        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
+        for (float lNextValue : pQueryParamValues) {
+          lValues.add(String.valueOf(lNextValue));
+        }
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null.");
+      }
+    }
+
+    /**
+     * Method adds the request parameters with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder addQueryParam( String pQueryParamName, double... pQueryParamValues ) {
+      if (pQueryParamName != null && pQueryParamValues != null) {
+        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
+        for (double lNextValue : pQueryParamValues) {
+          lValues.add(String.valueOf(lNextValue));
+        }
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null.");
+      }
+    }
+
+    /**
+     * Method adds the request parameters with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder addQueryParam( String pQueryParamName, char... pQueryParamValues ) {
+      if (pQueryParamName != null && pQueryParamValues != null) {
+        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
+        for (char lNextValue : pQueryParamValues) {
+          lValues.add(String.valueOf(lNextValue));
         }
         return this;
       }
@@ -521,6 +845,10 @@ public class RESTRequest {
      */
     public RESTRequest build( ) {
       return new RESTRequest(this);
+    }
+
+    private Set<String> getQueryParamSet( String pQueryParamName ) {
+      return queryParams.computeIfAbsent(pQueryParamName, k -> new HashSet<>());
     }
   }
 }

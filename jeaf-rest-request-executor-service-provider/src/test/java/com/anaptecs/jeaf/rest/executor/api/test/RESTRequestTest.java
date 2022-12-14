@@ -35,7 +35,7 @@ public class RESTRequestTest {
     // Test handling of multiple value for one query param
     lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON);
     lBuilder.addQueryParam("query1", "Hello");
-    lBuilder.addQueryParams("query1", "World", "!");
+    lBuilder.addQueryParam("query1", "World", "!");
 
     lRequest = lBuilder.build();
     assertEquals(String.class, lRequest.getServiceClass());
@@ -55,7 +55,7 @@ public class RESTRequestTest {
 
     lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON);
     lBuilder.addQueryParam("query1", "Hello");
-    lBuilder.addQueryParams("query1", "World", "!");
+    lBuilder.addQueryParam("query1", "World", "!");
     lBuilder.addQueryParam("query1", "Hello");
     lBuilder.addQueryParam("query2", "???");
 
@@ -76,12 +76,12 @@ public class RESTRequestTest {
     // Test handling of multiple ways to add data
     lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON);
     lBuilder.addQueryParam("query1", "Hello");
-    lBuilder.addQueryParams("query1", "World", "!");
+    lBuilder.addQueryParam("query1", "World", "!");
     lBuilder.addQueryParam("query1", "Hello");
     Set<String> lStrings = new HashSet<>();
     lStrings.add("Wonderful");
     lStrings.add("world");
-    lBuilder.addQueryParams("query1", lStrings);
+    lBuilder.addQueryParam("query1", lStrings);
     lBuilder.addQueryParam("query2", "???");
 
     lRequest = lBuilder.build();
