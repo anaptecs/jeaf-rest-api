@@ -5,11 +5,16 @@
  */
 package com.anaptecs.jeaf.rest.executor.api;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 /**
@@ -19,6 +24,11 @@ import java.util.Set;
  * @author JEAF Development Team
  */
 public class RESTRequest {
+  /**
+   * Delimiter for header fields in case that there are multiple values for one header.
+   */
+  private static final String DELIMITER = ", ";
+
   /**
    * Based on the service class a REST executor ({@link RESTRequestExecutor}) is able to resolve the URL of the REST
    * resource that should be called as well as all other configuration parameters.
@@ -38,13 +48,13 @@ public class RESTRequest {
   /**
    * Http request headers that belong to the request.
    */
-  private final Map<String, String> headers;
+  private final Map<String, List<String>> headerFields;
 
   /**
-   * Query params that belong to the request. Please be aware that for query params it is supported to have more than
-   * one value for it.
+   * Query parameters that belong to the request. Please be aware that for query parameters it is supported to have more
+   * than one value for it.
    */
-  private final Map<String, Set<String>> queryParams;
+  private final Map<String, List<String>> queryParameters;
 
   /**
    * Cookies that belong to the request
@@ -89,8 +99,8 @@ public class RESTRequest {
     serviceClass = pBuilder.serviceClass;
     httpMethod = pBuilder.httpMethod;
     path = pBuilder.path;
-    headers = new HashMap<>(pBuilder.headers);
-    queryParams = new HashMap<>(pBuilder.queryParams);
+    headerFields = new HashMap<>(pBuilder.headerFields);
+    queryParameters = new HashMap<>(pBuilder.queryParameters);
     cookies = new HashMap<>(pBuilder.cookies);
     body = pBuilder.body;
     contentType = pBuilder.contentType;
@@ -126,12 +136,60 @@ public class RESTRequest {
   }
 
   /**
-   * Method returns the http headers that should be sent as part of the request.
+   * Method returns the http headers that should be sent as part of the request. In case that there is more then one
+   * value for a header field the the values will be concatenated using ','.
+   * 
+   * @return {@link Map} All http headers that should be sent as part of the request. The method never returns null.
+   * 
+   * @see #getHeaderFields()
+   */
+  @Deprecated
+  public Map<String, String> getHeaders( ) {
+    Map<String, String> lHeaders = new HashMap<>();
+    for (Entry<String, List<String>> lNext : headerFields.entrySet()) {
+      StringBuilder lBuffer = new StringBuilder();
+      List<String> lValue = lNext.getValue();
+      if (lValue != null) {
+        Iterator<String> lIterator = lValue.iterator();
+        while (lIterator.hasNext()) {
+          lBuffer.append(lIterator.next());
+          if (lIterator.hasNext()) {
+            lBuffer.append(DELIMITER);
+          }
+          lHeaders.put(lNext.getKey(), lBuffer.toString());
+        }
+      }
+      else {
+        lHeaders.put(lNext.getKey(), null);
+      }
+    }
+    return lHeaders;
+  }
+
+  /**
+   * Method returns the http headers that should be sent as part of the request. Please be aware there mights be more
+   * then one value for a header field.
    * 
    * @return {@link Map} All http headers that should be sent as part of the request. The method never returns null.
    */
-  public Map<String, String> getHeaders( ) {
-    return Collections.unmodifiableMap(headers);
+  public Map<String, List<String>> getHeaderFields( ) {
+    return Collections.unmodifiableMap(headerFields);
+  }
+
+  /**
+   * Method returns the query parameters that should be sent as part of the request. Please be aware that for query
+   * params it is supported to have more than one value for it.
+   * 
+   * @return {@link Map} All query parameters that should be sent as part of the request. The method never returns null.
+   * @deprecated Please use {@link #getQueryParameters()}
+   */
+  @Deprecated
+  public Map<String, Set<String>> getQueryParams( ) {
+    Map<String, Set<String>> lEntries = new HashMap<>();
+    for (Entry<String, List<String>> lNext : queryParameters.entrySet()) {
+      lEntries.put(lNext.getKey(), new HashSet<>(lNext.getValue()));
+    }
+    return Collections.unmodifiableMap(lEntries);
   }
 
   /**
@@ -140,8 +198,8 @@ public class RESTRequest {
    * 
    * @return {@link Map} All query parameters that should be sent as part of the request. The method never returns null.
    */
-  public Map<String, Set<String>> getQueryParams( ) {
-    return Collections.unmodifiableMap(queryParams);
+  public Map<String, List<String>> getQueryParameters( ) {
+    return Collections.unmodifiableMap(queryParameters);
   }
 
   /**
@@ -189,14 +247,14 @@ public class RESTRequest {
     private String path = "/";
 
     /**
-     * @see RESTRequest#headers
+     * @see RESTRequest#headerFields
      */
-    private final Map<String, String> headers = new HashMap<>();
+    private final Map<String, List<String>> headerFields = new HashMap<>();
 
     /**
-     * @see RESTRequest#queryParams
+     * @see RESTRequest#queryParameters
      */
-    private final Map<String, Set<String>> queryParams = new HashMap<>();
+    private final Map<String, List<String>> queryParameters = new HashMap<>();
 
     /**
      * @see RESTRequest#cookies
@@ -257,15 +315,26 @@ public class RESTRequest {
 
     /**
      * Method sets the http request header with the passed name. May be already existing header with the same name will
-     * be overwritten.
+     * be overwritten. Please be aware that for header fields it is supported to have more than one value for it.
      * 
      * @param pHeaderName Name of the header. The parameter must not be null.
-     * @param pHeaderValue Header value that should be set. The parameter may be null.
+     * @param pHeaderValues Header values that should be set. The parameter may be null. All passed values will be
+     * converted into a {@link String}.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
-    public Builder setHeader( String pHeaderName, String pHeaderValue ) {
+    public Builder setHeader( String pHeaderName, boolean... pHeaderValues ) {
       if (pHeaderName != null) {
-        headers.put(pHeaderName, pHeaderValue);
+        List<String> lValues;
+        if (pHeaderValues != null && pHeaderValues.length > 0) {
+          lValues = new ArrayList<>(pHeaderValues.length);
+          for (boolean lNextValue : pHeaderValues) {
+            lValues.add(String.valueOf(lNextValue));
+          }
+        }
+        else {
+          lValues = null;
+        }
+        headerFields.put(pHeaderName, lValues);
         return this;
       }
       else {
@@ -275,16 +344,26 @@ public class RESTRequest {
 
     /**
      * Method sets the http request header with the passed name. May be already existing header with the same name will
-     * be overwritten.
+     * be overwritten. Please be aware that for header fields it is supported to have more than one value for it.
      * 
      * @param pHeaderName Name of the header. The parameter must not be null.
-     * @param pHeaderValue Header value that should be set. The parameter may be null.
+     * @param pHeaderValues Header values that should be set. The parameter may be null. All passed values will be
+     * converted into a {@link String}.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
-    public Builder setHeader( String pHeaderName, Boolean pHeaderValue ) {
+    public Builder setHeader( String pHeaderName, byte... pHeaderValues ) {
       if (pHeaderName != null) {
-        String lHeaderValueAsString = pHeaderValue != null ? pHeaderValue.toString() : null;
-        headers.put(pHeaderName, lHeaderValueAsString);
+        List<String> lValues;
+        if (pHeaderValues != null && pHeaderValues.length > 0) {
+          lValues = new ArrayList<>(pHeaderValues.length);
+          for (byte lNextValue : pHeaderValues) {
+            lValues.add(String.valueOf(lNextValue));
+          }
+        }
+        else {
+          lValues = null;
+        }
+        headerFields.put(pHeaderName, lValues);
         return this;
       }
       else {
@@ -294,16 +373,26 @@ public class RESTRequest {
 
     /**
      * Method sets the http request header with the passed name. May be already existing header with the same name will
-     * be overwritten.
+     * be overwritten. Please be aware that for header fields it is supported to have more than one value for it.
      * 
      * @param pHeaderName Name of the header. The parameter must not be null.
-     * @param pHeaderValue Header value that should be set. The parameter may be null.
+     * @param pHeaderValues Header values that should be set. The parameter may be null. All passed values will be
+     * converted into a {@link String}.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
-    public Builder setHeader( String pHeaderName, Byte pHeaderValue ) {
+    public Builder setHeader( String pHeaderName, short... pHeaderValues ) {
       if (pHeaderName != null) {
-        String lHeaderValueAsString = pHeaderValue != null ? pHeaderValue.toString() : null;
-        headers.put(pHeaderName, lHeaderValueAsString);
+        List<String> lValues;
+        if (pHeaderValues != null && pHeaderValues.length > 0) {
+          lValues = new ArrayList<>(pHeaderValues.length);
+          for (short lNextValue : pHeaderValues) {
+            lValues.add(String.valueOf(lNextValue));
+          }
+        }
+        else {
+          lValues = null;
+        }
+        headerFields.put(pHeaderName, lValues);
         return this;
       }
       else {
@@ -313,16 +402,26 @@ public class RESTRequest {
 
     /**
      * Method sets the http request header with the passed name. May be already existing header with the same name will
-     * be overwritten.
+     * be overwritten. Please be aware that for header fields it is supported to have more than one value for it.
      * 
      * @param pHeaderName Name of the header. The parameter must not be null.
-     * @param pHeaderValue Header value that should be set. The parameter may be null.
+     * @param pHeaderValues Header values that should be set. The parameter may be null. All passed values will be
+     * converted into a {@link String}.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
-    public Builder setHeader( String pHeaderName, Short pHeaderValue ) {
+    public Builder setHeader( String pHeaderName, int... pHeaderValues ) {
       if (pHeaderName != null) {
-        String lHeaderValueAsString = pHeaderValue != null ? pHeaderValue.toString() : null;
-        headers.put(pHeaderName, lHeaderValueAsString);
+        List<String> lValues;
+        if (pHeaderValues != null && pHeaderValues.length > 0) {
+          lValues = new ArrayList<>(pHeaderValues.length);
+          for (int lNextValue : pHeaderValues) {
+            lValues.add(String.valueOf(lNextValue));
+          }
+        }
+        else {
+          lValues = null;
+        }
+        headerFields.put(pHeaderName, lValues);
         return this;
       }
       else {
@@ -332,16 +431,26 @@ public class RESTRequest {
 
     /**
      * Method sets the http request header with the passed name. May be already existing header with the same name will
-     * be overwritten.
+     * be overwritten. Please be aware that for header fields it is supported to have more than one value for it.
      * 
      * @param pHeaderName Name of the header. The parameter must not be null.
-     * @param pHeaderValue Header value that should be set. The parameter may be null.
+     * @param pHeaderValues Header values that should be set. The parameter may be null. All passed values will be
+     * converted into a {@link String}.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
-    public Builder setHeader( String pHeaderName, Integer pHeaderValue ) {
+    public Builder setHeader( String pHeaderName, long... pHeaderValues ) {
       if (pHeaderName != null) {
-        String lHeaderValueAsString = pHeaderValue != null ? pHeaderValue.toString() : null;
-        headers.put(pHeaderName, lHeaderValueAsString);
+        List<String> lValues;
+        if (pHeaderValues != null && pHeaderValues.length > 0) {
+          lValues = new ArrayList<>(pHeaderValues.length);
+          for (long lNextValue : pHeaderValues) {
+            lValues.add(String.valueOf(lNextValue));
+          }
+        }
+        else {
+          lValues = null;
+        }
+        headerFields.put(pHeaderName, lValues);
         return this;
       }
       else {
@@ -351,16 +460,26 @@ public class RESTRequest {
 
     /**
      * Method sets the http request header with the passed name. May be already existing header with the same name will
-     * be overwritten.
+     * be overwritten. Please be aware that for header fields it is supported to have more than one value for it.
      * 
      * @param pHeaderName Name of the header. The parameter must not be null.
-     * @param pHeaderValue Header value that should be set. The parameter may be null.
+     * @param pHeaderValues Header values that should be set. The parameter may be null. All passed values will be
+     * converted into a {@link String}.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
-    public Builder setHeader( String pHeaderName, Long pHeaderValue ) {
+    public Builder setHeader( String pHeaderName, float... pHeaderValues ) {
       if (pHeaderName != null) {
-        String lHeaderValueAsString = pHeaderValue != null ? pHeaderValue.toString() : null;
-        headers.put(pHeaderName, lHeaderValueAsString);
+        List<String> lValues;
+        if (pHeaderValues != null && pHeaderValues.length > 0) {
+          lValues = new ArrayList<>(pHeaderValues.length);
+          for (float lNextValue : pHeaderValues) {
+            lValues.add(String.valueOf(lNextValue));
+          }
+        }
+        else {
+          lValues = null;
+        }
+        headerFields.put(pHeaderName, lValues);
         return this;
       }
       else {
@@ -370,16 +489,26 @@ public class RESTRequest {
 
     /**
      * Method sets the http request header with the passed name. May be already existing header with the same name will
-     * be overwritten.
+     * be overwritten. Please be aware that for header fields it is supported to have more than one value for it.
      * 
      * @param pHeaderName Name of the header. The parameter must not be null.
-     * @param pHeaderValue Header value that should be set. The parameter may be null.
+     * @param pHeaderValues Header values that should be set. The parameter may be null. All passed values will be
+     * converted into a {@link String}.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
-    public Builder setHeader( String pHeaderName, Float pHeaderValue ) {
+    public Builder setHeader( String pHeaderName, double... pHeaderValues ) {
       if (pHeaderName != null) {
-        String lHeaderValueAsString = pHeaderValue != null ? pHeaderValue.toString() : null;
-        headers.put(pHeaderName, lHeaderValueAsString);
+        List<String> lValues;
+        if (pHeaderValues != null && pHeaderValues.length > 0) {
+          lValues = new ArrayList<>(pHeaderValues.length);
+          for (double lNextValue : pHeaderValues) {
+            lValues.add(String.valueOf(lNextValue));
+          }
+        }
+        else {
+          lValues = null;
+        }
+        headerFields.put(pHeaderName, lValues);
         return this;
       }
       else {
@@ -389,16 +518,26 @@ public class RESTRequest {
 
     /**
      * Method sets the http request header with the passed name. May be already existing header with the same name will
-     * be overwritten.
+     * be overwritten. Please be aware that for header fields it is supported to have more than one value for it.
      * 
      * @param pHeaderName Name of the header. The parameter must not be null.
-     * @param pHeaderValue Header value that should be set. The parameter may be null.
+     * @param pHeaderValues Header values that should be set. The parameter may be null. All passed values will be
+     * converted into a {@link String}.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
-    public Builder setHeader( String pHeaderName, Double pHeaderValue ) {
+    public Builder setHeader( String pHeaderName, char... pHeaderValues ) {
       if (pHeaderName != null) {
-        String lHeaderValueAsString = pHeaderValue != null ? pHeaderValue.toString() : null;
-        headers.put(pHeaderName, lHeaderValueAsString);
+        List<String> lValues;
+        if (pHeaderValues != null && pHeaderValues.length > 0) {
+          lValues = new ArrayList<>(pHeaderValues.length);
+          for (char lNextValue : pHeaderValues) {
+            lValues.add(String.valueOf(lNextValue));
+          }
+        }
+        else {
+          lValues = null;
+        }
+        headerFields.put(pHeaderName, lValues);
         return this;
       }
       else {
@@ -408,16 +547,46 @@ public class RESTRequest {
 
     /**
      * Method sets the http request header with the passed name. May be already existing header with the same name will
-     * be overwritten.
+     * be overwritten. Please be aware that for header fields it is supported to have more than one value for it.
      * 
      * @param pHeaderName Name of the header. The parameter must not be null.
-     * @param pHeaderValue Header value that should be set. The parameter may be null.
+     * @param pHeaderValues Header values that should be set. The parameter may be null. All passed values will be
+     * converted into a {@link String} using {@link String#toString()}.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
-    public Builder setHeader( String pHeaderName, Character pHeaderValue ) {
+    public Builder setHeader( String pHeaderName, String... pHeaderValues ) {
+      List<String> lHeaderValueList;
+      if (pHeaderValues != null) {
+        lHeaderValueList = Arrays.asList(pHeaderValues);
+      }
+      else {
+        lHeaderValueList = null;
+      }
+      return this.setHeader(pHeaderName, lHeaderValueList);
+    }
+
+    /**
+     * Method sets the http request header with the passed name. May be already existing header with the same name will
+     * be overwritten. Please be aware that for header fields it is supported to have more than one value for it.
+     * 
+     * @param pHeaderName Name of the header. The parameter must not be null.
+     * @param pHeaderValues Header values that should be set. The parameter may be null. All passed values will be
+     * converted into a {@link String} using {@link String#toString()}.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder setHeader( String pHeaderName, Collection<?> pHeaderValues ) {
       if (pHeaderName != null) {
-        String lHeaderValueAsString = pHeaderValue != null ? pHeaderValue.toString() : null;
-        headers.put(pHeaderName, lHeaderValueAsString);
+        List<String> lValues;
+        if (pHeaderValues != null) {
+          lValues = new ArrayList<>(pHeaderValues.size());
+          for (Object lNext : pHeaderValues) {
+            lValues.add(lNext.toString());
+          }
+        }
+        else {
+          lValues = null;
+        }
+        headerFields.put(pHeaderName, lValues);
         return this;
       }
       else {
@@ -426,18 +595,275 @@ public class RESTRequest {
     }
 
     /**
-     * Method adds the request parameter with the passed name. May be already existing query parameters with the same
-     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * Method sets the http request header with the passed name. May be already existing header with the same name will
+     * be overwritten. Please be aware that for header fields it is supported to have more than one value for it.
      * 
-     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
-     * @param pQueryParamValue Value of the query parameter. The parameter must not be null.
+     * @param pHeaderName Name of the header. The parameter must not be null.
+     * @param pHeaderValue Header value that should be set. The parameter may be null. The parameter will be converted
+     * into a {@link String} using {@link String#toString()}.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
-    public Builder addQueryParam( String pQueryParamName, String pQueryParamValue ) {
-      if (pQueryParamName != null && pQueryParamValue != null) {
-        Set<String> lValues = getQueryParamSet(pQueryParamName);
-        lValues.add(pQueryParamValue);
+    public Builder setHeader( String pHeaderName, Object pHeaderValue ) {
+      String[] lValue;
+      if (pHeaderValue != null) {
+        lValue = new String[] { pHeaderValue.toString() };
+      }
+      else {
+        lValue = null;
+      }
+      return this.setHeader(pHeaderName, lValue);
+    }
+
+    /**
+     * Method adds the request parameters with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query parameters it is supported to have more than one value for
+     * it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder setQueryParameter( String pQueryParamName, boolean... pQueryParamValues ) {
+      if (pQueryParamName != null && pQueryParamValues != null && pQueryParamValues.length > 0) {
+        List<String> lValues = new ArrayList<>(pQueryParamValues.length);
+        for (boolean lNextValue : pQueryParamValues) {
+          lValues.add(String.valueOf(lNextValue));
+        }
+        queryParameters.put(pQueryParamName, lValues);
         return this;
+      }
+      else {
+        throw new IllegalArgumentException(
+            "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided");
+      }
+    }
+
+    /**
+     * Method adds the request parameters with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query parameters it is supported to have more than one value for
+     * it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder setQueryParameter( String pQueryParamName, byte... pQueryParamValues ) {
+      if (pQueryParamName != null && pQueryParamValues != null && pQueryParamValues.length > 0) {
+        List<String> lValues = new ArrayList<>(pQueryParamValues.length);
+        for (byte lNextValue : pQueryParamValues) {
+          lValues.add(String.valueOf(lNextValue));
+        }
+        queryParameters.put(pQueryParamName, lValues);
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException(
+            "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided");
+      }
+    }
+
+    /**
+     * Method adds the request parameters with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query parameters it is supported to have more than one value for
+     * it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder setQueryParameter( String pQueryParamName, short... pQueryParamValues ) {
+      if (pQueryParamName != null && pQueryParamValues != null && pQueryParamValues.length > 0) {
+        List<String> lValues = new ArrayList<>(pQueryParamValues.length);
+        for (short lNextValue : pQueryParamValues) {
+          lValues.add(String.valueOf(lNextValue));
+        }
+        queryParameters.put(pQueryParamName, lValues);
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException(
+            "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided");
+      }
+    }
+
+    /**
+     * Method adds the request parameters with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query parameters it is supported to have more than one value for
+     * it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder setQueryParameter( String pQueryParamName, int... pQueryParamValues ) {
+      if (pQueryParamName != null && pQueryParamValues != null && pQueryParamValues.length > 0) {
+        List<String> lValues = new ArrayList<>(pQueryParamValues.length);
+        for (int lNextValue : pQueryParamValues) {
+          lValues.add(String.valueOf(lNextValue));
+        }
+        queryParameters.put(pQueryParamName, lValues);
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException(
+            "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided");
+      }
+    }
+
+    /**
+     * Method adds the request parameters with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query parameters it is supported to have more than one value for
+     * it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder setQueryParameter( String pQueryParamName, long... pQueryParamValues ) {
+      if (pQueryParamName != null && pQueryParamValues != null && pQueryParamValues.length > 0) {
+        List<String> lValues = new ArrayList<>(pQueryParamValues.length);
+        for (long lNextValue : pQueryParamValues) {
+          lValues.add(String.valueOf(lNextValue));
+        }
+        queryParameters.put(pQueryParamName, lValues);
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException(
+            "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided");
+      }
+    }
+
+    /**
+     * Method adds the request parameters with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query parameters it is supported to have more than one value for
+     * it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder setQueryParameter( String pQueryParamName, float... pQueryParamValues ) {
+      if (pQueryParamName != null && pQueryParamValues != null && pQueryParamValues.length > 0) {
+        List<String> lValues = new ArrayList<>(pQueryParamValues.length);
+        for (float lNextValue : pQueryParamValues) {
+          lValues.add(String.valueOf(lNextValue));
+        }
+        queryParameters.put(pQueryParamName, lValues);
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException(
+            "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided");
+      }
+    }
+
+    /**
+     * Method adds the request parameters with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query parameters it is supported to have more than one value for
+     * it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder setQueryParameter( String pQueryParamName, double... pQueryParamValues ) {
+      if (pQueryParamName != null && pQueryParamValues != null && pQueryParamValues.length > 0) {
+        List<String> lValues = new ArrayList<>(pQueryParamValues.length);
+        for (double lNextValue : pQueryParamValues) {
+          lValues.add(String.valueOf(lNextValue));
+        }
+        queryParameters.put(pQueryParamName, lValues);
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException(
+            "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided");
+      }
+    }
+
+    /**
+     * Method adds the request parameters with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query parameters it is supported to have more than one value for
+     * it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder setQueryParameter( String pQueryParamName, char... pQueryParamValues ) {
+      if (pQueryParamName != null && pQueryParamValues != null && pQueryParamValues.length > 0) {
+        List<String> lValues = new ArrayList<>(pQueryParamValues.length);
+        for (char lNextValue : pQueryParamValues) {
+          lValues.add(String.valueOf(lNextValue));
+        }
+        queryParameters.put(pQueryParamName, lValues);
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException(
+            "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided");
+      }
+    }
+
+    /**
+     * Method adds the request parameters with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query parameters it is supported to have more than one value for
+     * it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder setQueryParameter( String pQueryParamName, String... pQueryParamValues ) {
+      if (pQueryParamValues != null) {
+        return this.setQueryParameter(pQueryParamName, Arrays.asList(pQueryParamValues));
+      }
+      else {
+        throw new IllegalArgumentException(
+            "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided");
+      }
+    }
+
+    /**
+     * Method adds the request parameters with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query parameters it is supported to have more than one value for
+     * it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter must not be null and must contain at least
+     * one real value.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder setQueryParameter( String pQueryParamName, Collection<?> pQueryParamValues ) {
+      if (pQueryParamName != null && pQueryParamValues != null && pQueryParamValues.isEmpty() == false) {
+        List<String> lQueryParamValueList;
+        lQueryParamValueList = new ArrayList<>(pQueryParamValues.size());
+        for (Object lNext : pQueryParamValues) {
+          lQueryParamValueList.add(lNext != null ? lNext.toString() : null);
+        }
+        queryParameters.put(pQueryParamName, lQueryParamValueList);
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException(
+            "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided");
+      }
+    }
+
+    /**
+     * Method adds the request parameters with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query parameters it is supported to have more than one value for
+     * it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValue Value of the query parameter. The parameter must not be null. The parameter will be
+     * converted into a {@link String} using {@link String#toString()}.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder setQueryParameter( String pQueryParamName, Object pQueryParamValue ) {
+      if (pQueryParamValue != null) {
+        return this.setQueryParameter(pQueryParamName, new String[] { pQueryParamValue.toString() });
       }
       else {
         throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValue' must not be null.");
@@ -446,148 +872,17 @@ public class RESTRequest {
 
     /**
      * Method adds the request parameter with the passed name. May be already existing query parameters with the same
-     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * name will be extended. Please be aware that for query parameters it is supported to have more than one value for
+     * it.
      * 
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
      * @param pQueryParamValue Value of the query parameter. The parameter must not be null.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
-    public Builder addQueryParam( String pQueryParamName, Boolean pQueryParamValue ) {
+    @Deprecated
+    public Builder addQueryParam( String pQueryParamName, Object pQueryParamValue ) {
       if (pQueryParamName != null && pQueryParamValue != null) {
-        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
-        lValues.add(pQueryParamValue.toString());
-        return this;
-      }
-      else {
-        throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValue' must not be null.");
-      }
-    }
-
-    /**
-     * Method adds the request parameter with the passed name. May be already existing query parameters with the same
-     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
-     * 
-     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
-     * @param pQueryParamValue Value of the query parameter. The parameter must not be null.
-     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
-     */
-    public Builder addQueryParam( String pQueryParamName, Byte pQueryParamValue ) {
-      if (pQueryParamName != null && pQueryParamValue != null) {
-        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
-        lValues.add(pQueryParamValue.toString());
-        return this;
-      }
-      else {
-        throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValue' must not be null.");
-      }
-    }
-
-    /**
-     * Method adds the request parameter with the passed name. May be already existing query parameters with the same
-     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
-     * 
-     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
-     * @param pQueryParamValue Value of the query parameter. The parameter must not be null.
-     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
-     */
-    public Builder addQueryParam( String pQueryParamName, Short pQueryParamValue ) {
-      if (pQueryParamName != null && pQueryParamValue != null) {
-        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
-        lValues.add(pQueryParamValue.toString());
-        return this;
-      }
-      else {
-        throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValue' must not be null.");
-      }
-    }
-
-    /**
-     * Method adds the request parameter with the passed name. May be already existing query parameters with the same
-     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
-     * 
-     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
-     * @param pQueryParamValue Value of the query parameter. The parameter must not be null.
-     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
-     */
-    public Builder addQueryParam( String pQueryParamName, Integer pQueryParamValue ) {
-      if (pQueryParamName != null && pQueryParamValue != null) {
-        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
-        lValues.add(pQueryParamValue.toString());
-        return this;
-      }
-      else {
-        throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValue' must not be null.");
-      }
-    }
-
-    /**
-     * Method adds the request parameter with the passed name. May be already existing query parameters with the same
-     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
-     * 
-     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
-     * @param pQueryParamValue Value of the query parameter. The parameter must not be null.
-     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
-     */
-    public Builder addQueryParam( String pQueryParamName, Long pQueryParamValue ) {
-      if (pQueryParamName != null && pQueryParamValue != null) {
-        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
-        lValues.add(pQueryParamValue.toString());
-        return this;
-      }
-      else {
-        throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValue' must not be null.");
-      }
-    }
-
-    /**
-     * Method adds the request parameter with the passed name. May be already existing query parameters with the same
-     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
-     * 
-     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
-     * @param pQueryParamValue Value of the query parameter. The parameter must not be null.
-     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
-     */
-    public Builder addQueryParam( String pQueryParamName, Float pQueryParamValue ) {
-      if (pQueryParamName != null && pQueryParamValue != null) {
-        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
-        lValues.add(pQueryParamValue.toString());
-        return this;
-      }
-      else {
-        throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValue' must not be null.");
-      }
-    }
-
-    /**
-     * Method adds the request parameter with the passed name. May be already existing query parameters with the same
-     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
-     * 
-     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
-     * @param pQueryParamValue Value of the query parameter. The parameter must not be null.
-     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
-     */
-    public Builder addQueryParam( String pQueryParamName, Double pQueryParamValue ) {
-      if (pQueryParamName != null && pQueryParamValue != null) {
-        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
-        lValues.add(pQueryParamValue.toString());
-        return this;
-      }
-      else {
-        throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValue' must not be null.");
-      }
-    }
-
-    /**
-     * Method adds the request parameter with the passed name. May be already existing query parameters with the same
-     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
-     * 
-     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
-     * @param pQueryParamValue Value of the query parameter. The parameter must not be null.
-     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
-     */
-    public Builder addQueryParam( String pQueryParamName, Character pQueryParamValue ) {
-      if (pQueryParamName != null && pQueryParamValue != null) {
-        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
+        List<String> lValues = getQueryParamSet(pQueryParamName);
         lValues.add(pQueryParamValue.toString());
         return this;
       }
@@ -598,15 +893,17 @@ public class RESTRequest {
 
     /**
      * Method adds the request parameters with the passed name. May be already existing query parameters with the same
-     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * name will be extended. Please be aware that for query parameters it is supported to have more than one value for
+     * it.
      * 
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
      * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
+    @Deprecated
     public Builder addQueryParam( String pQueryParamName, Collection<?> pQueryParamValues ) {
       if (pQueryParamName != null && pQueryParamValues != null) {
-        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
+        List<String> lValues = this.getQueryParamSet(pQueryParamName);
         for (Object lNextValue : pQueryParamValues) {
           if (lNextValue != null) {
             lValues.add(lNextValue.toString());
@@ -621,17 +918,19 @@ public class RESTRequest {
 
     /**
      * Method adds the request parameters with the passed name. May be already existing query parameters with the same
-     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * name will be extended. Please be aware that for query parameters it is supported to have more than one value for
+     * it.
      * 
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
      * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
+    @Deprecated
     public Builder addQueryParam( String pQueryParamName, String... pQueryParamValues ) {
       if (pQueryParamName != null && pQueryParamValues != null) {
-        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
-        for (String lNextValue : pQueryParamValues) {
-          lValues.add(lNextValue);
+        List<String> lValues = this.getQueryParamSet(pQueryParamName);
+        for (Object lNextValue : pQueryParamValues) {
+          lValues.add(lNextValue.toString());
         }
         return this;
       }
@@ -642,15 +941,17 @@ public class RESTRequest {
 
     /**
      * Method adds the request parameters with the passed name. May be already existing query parameters with the same
-     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * name will be extended. Please be aware that for query parameters it is supported to have more than one value for
+     * it.
      * 
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
      * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
+    @Deprecated
     public Builder addQueryParam( String pQueryParamName, boolean... pQueryParamValues ) {
       if (pQueryParamName != null && pQueryParamValues != null) {
-        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
+        List<String> lValues = this.getQueryParamSet(pQueryParamName);
         for (boolean lNextValue : pQueryParamValues) {
           lValues.add(String.valueOf(lNextValue));
         }
@@ -663,15 +964,17 @@ public class RESTRequest {
 
     /**
      * Method adds the request parameters with the passed name. May be already existing query parameters with the same
-     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * name will be extended. Please be aware that for query parameters it is supported to have more than one value for
+     * it.
      * 
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
      * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
+    @Deprecated
     public Builder addQueryParam( String pQueryParamName, byte... pQueryParamValues ) {
       if (pQueryParamName != null && pQueryParamValues != null) {
-        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
+        List<String> lValues = this.getQueryParamSet(pQueryParamName);
         for (byte lNextValue : pQueryParamValues) {
           lValues.add(String.valueOf(lNextValue));
         }
@@ -684,15 +987,17 @@ public class RESTRequest {
 
     /**
      * Method adds the request parameters with the passed name. May be already existing query parameters with the same
-     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * name will be extended. Please be aware that for query parameters it is supported to have more than one value for
+     * it.
      * 
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
      * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
+    @Deprecated
     public Builder addQueryParam( String pQueryParamName, short... pQueryParamValues ) {
       if (pQueryParamName != null && pQueryParamValues != null) {
-        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
+        List<String> lValues = this.getQueryParamSet(pQueryParamName);
         for (short lNextValue : pQueryParamValues) {
           lValues.add(String.valueOf(lNextValue));
         }
@@ -705,15 +1010,17 @@ public class RESTRequest {
 
     /**
      * Method adds the request parameters with the passed name. May be already existing query parameters with the same
-     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * name will be extended. Please be aware that for query parameters it is supported to have more than one value for
+     * it.
      * 
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
      * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
+    @Deprecated
     public Builder addQueryParam( String pQueryParamName, int... pQueryParamValues ) {
       if (pQueryParamName != null && pQueryParamValues != null) {
-        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
+        List<String> lValues = this.getQueryParamSet(pQueryParamName);
         for (int lNextValue : pQueryParamValues) {
           lValues.add(String.valueOf(lNextValue));
         }
@@ -726,15 +1033,17 @@ public class RESTRequest {
 
     /**
      * Method adds the request parameters with the passed name. May be already existing query parameters with the same
-     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * name will be extended. Please be aware that for query parameters it is supported to have more than one value for
+     * it.
      * 
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
      * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
+    @Deprecated
     public Builder addQueryParam( String pQueryParamName, long... pQueryParamValues ) {
       if (pQueryParamName != null && pQueryParamValues != null) {
-        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
+        List<String> lValues = this.getQueryParamSet(pQueryParamName);
         for (long lNextValue : pQueryParamValues) {
           lValues.add(String.valueOf(lNextValue));
         }
@@ -747,15 +1056,17 @@ public class RESTRequest {
 
     /**
      * Method adds the request parameters with the passed name. May be already existing query parameters with the same
-     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * name will be extended. Please be aware that for query parameters it is supported to have more than one value for
+     * it.
      * 
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
      * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
+    @Deprecated
     public Builder addQueryParam( String pQueryParamName, float... pQueryParamValues ) {
       if (pQueryParamName != null && pQueryParamValues != null) {
-        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
+        List<String> lValues = this.getQueryParamSet(pQueryParamName);
         for (float lNextValue : pQueryParamValues) {
           lValues.add(String.valueOf(lNextValue));
         }
@@ -768,15 +1079,17 @@ public class RESTRequest {
 
     /**
      * Method adds the request parameters with the passed name. May be already existing query parameters with the same
-     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * name will be extended. Please be aware that for query parameters it is supported to have more than one value for
+     * it.
      * 
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
      * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
+    @Deprecated
     public Builder addQueryParam( String pQueryParamName, double... pQueryParamValues ) {
       if (pQueryParamName != null && pQueryParamValues != null) {
-        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
+        List<String> lValues = this.getQueryParamSet(pQueryParamName);
         for (double lNextValue : pQueryParamValues) {
           lValues.add(String.valueOf(lNextValue));
         }
@@ -789,15 +1102,17 @@ public class RESTRequest {
 
     /**
      * Method adds the request parameters with the passed name. May be already existing query parameters with the same
-     * name will be extended. Please be aware that for query params it is supported to have more than one value for it.
+     * name will be extended. Please be aware that for query parameters it is supported to have more than one value for
+     * it.
      * 
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
      * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
+    @Deprecated
     public Builder addQueryParam( String pQueryParamName, char... pQueryParamValues ) {
       if (pQueryParamName != null && pQueryParamValues != null) {
-        Set<String> lValues = this.getQueryParamSet(pQueryParamName);
+        List<String> lValues = this.getQueryParamSet(pQueryParamName);
         for (char lNextValue : pQueryParamValues) {
           lValues.add(String.valueOf(lNextValue));
         }
@@ -847,8 +1162,8 @@ public class RESTRequest {
       return new RESTRequest(this);
     }
 
-    private Set<String> getQueryParamSet( String pQueryParamName ) {
-      return queryParams.computeIfAbsent(pQueryParamName, k -> new HashSet<>());
+    private List<String> getQueryParamSet( String pQueryParamName ) {
+      return queryParameters.computeIfAbsent(pQueryParamName, k -> new ArrayList<>(1));
     }
   }
 }
