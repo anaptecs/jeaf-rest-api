@@ -620,21 +620,22 @@ public class RESTRequest {
      * it.
      * 
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
-     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter may be null or empty.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
     public Builder setQueryParameter( String pQueryParamName, boolean... pQueryParamValues ) {
-      if (pQueryParamName != null && pQueryParamValues != null && pQueryParamValues.length > 0) {
-        List<String> lValues = new ArrayList<>(pQueryParamValues.length);
-        for (boolean lNextValue : pQueryParamValues) {
-          lValues.add(String.valueOf(lNextValue));
+      if (pQueryParamName != null) {
+        if (pQueryParamValues != null && pQueryParamValues.length > 0) {
+          List<String> lValues = new ArrayList<>(pQueryParamValues.length);
+          for (boolean lNextValue : pQueryParamValues) {
+            lValues.add(String.valueOf(lNextValue));
+          }
+          queryParameters.put(pQueryParamName, lValues);
         }
-        queryParameters.put(pQueryParamName, lValues);
         return this;
       }
       else {
-        throw new IllegalArgumentException(
-            "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided");
+        throw new IllegalArgumentException("Parameter 'pQueryParamName' must not be null.");
       }
     }
 
@@ -644,21 +645,22 @@ public class RESTRequest {
      * it.
      * 
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
-     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter may be null or empty.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
     public Builder setQueryParameter( String pQueryParamName, byte... pQueryParamValues ) {
-      if (pQueryParamName != null && pQueryParamValues != null && pQueryParamValues.length > 0) {
-        List<String> lValues = new ArrayList<>(pQueryParamValues.length);
-        for (byte lNextValue : pQueryParamValues) {
-          lValues.add(String.valueOf(lNextValue));
+      if (pQueryParamName != null) {
+        if (pQueryParamValues != null && pQueryParamValues.length > 0) {
+          List<String> lValues = new ArrayList<>(pQueryParamValues.length);
+          for (byte lNextValue : pQueryParamValues) {
+            lValues.add(String.valueOf(lNextValue));
+          }
+          queryParameters.put(pQueryParamName, lValues);
         }
-        queryParameters.put(pQueryParamName, lValues);
         return this;
       }
       else {
-        throw new IllegalArgumentException(
-            "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided");
+        throw new IllegalArgumentException("Parameter 'pQueryParamName' must not be null.");
       }
     }
 
@@ -668,21 +670,22 @@ public class RESTRequest {
      * it.
      * 
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
-     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter may be null or empty.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
     public Builder setQueryParameter( String pQueryParamName, short... pQueryParamValues ) {
-      if (pQueryParamName != null && pQueryParamValues != null && pQueryParamValues.length > 0) {
-        List<String> lValues = new ArrayList<>(pQueryParamValues.length);
-        for (short lNextValue : pQueryParamValues) {
-          lValues.add(String.valueOf(lNextValue));
+      if (pQueryParamName != null) {
+        if (pQueryParamValues != null && pQueryParamValues.length > 0) {
+          List<String> lValues = new ArrayList<>(pQueryParamValues.length);
+          for (short lNextValue : pQueryParamValues) {
+            lValues.add(String.valueOf(lNextValue));
+          }
+          queryParameters.put(pQueryParamName, lValues);
         }
-        queryParameters.put(pQueryParamName, lValues);
         return this;
       }
       else {
-        throw new IllegalArgumentException(
-            "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided");
+        throw new IllegalArgumentException("Parameter 'pQueryParamName' must not be null.");
       }
     }
 
@@ -692,21 +695,22 @@ public class RESTRequest {
      * it.
      * 
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
-     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter may be null or empty.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
     public Builder setQueryParameter( String pQueryParamName, int... pQueryParamValues ) {
-      if (pQueryParamName != null && pQueryParamValues != null && pQueryParamValues.length > 0) {
-        List<String> lValues = new ArrayList<>(pQueryParamValues.length);
-        for (int lNextValue : pQueryParamValues) {
-          lValues.add(String.valueOf(lNextValue));
+      if (pQueryParamName != null) {
+        if (pQueryParamValues != null && pQueryParamValues.length > 0) {
+          List<String> lValues = new ArrayList<>(pQueryParamValues.length);
+          for (int lNextValue : pQueryParamValues) {
+            lValues.add(String.valueOf(lNextValue));
+          }
+          queryParameters.put(pQueryParamName, lValues);
         }
-        queryParameters.put(pQueryParamName, lValues);
         return this;
       }
       else {
-        throw new IllegalArgumentException(
-            "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided");
+        throw new IllegalArgumentException("Parameter 'pQueryParamName' must not be null.");
       }
     }
 
@@ -716,21 +720,22 @@ public class RESTRequest {
      * it.
      * 
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
-     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter may be null or empty.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
     public Builder setQueryParameter( String pQueryParamName, long... pQueryParamValues ) {
-      if (pQueryParamName != null && pQueryParamValues != null && pQueryParamValues.length > 0) {
-        List<String> lValues = new ArrayList<>(pQueryParamValues.length);
-        for (long lNextValue : pQueryParamValues) {
-          lValues.add(String.valueOf(lNextValue));
+      if (pQueryParamName != null) {
+        if (pQueryParamValues != null && pQueryParamValues.length > 0) {
+          List<String> lValues = new ArrayList<>(pQueryParamValues.length);
+          for (long lNextValue : pQueryParamValues) {
+            lValues.add(String.valueOf(lNextValue));
+          }
+          queryParameters.put(pQueryParamName, lValues);
         }
-        queryParameters.put(pQueryParamName, lValues);
         return this;
       }
       else {
-        throw new IllegalArgumentException(
-            "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided");
+        throw new IllegalArgumentException("Parameter 'pQueryParamName' must not be null.");
       }
     }
 
@@ -740,21 +745,22 @@ public class RESTRequest {
      * it.
      * 
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
-     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter may be null or empty.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
     public Builder setQueryParameter( String pQueryParamName, float... pQueryParamValues ) {
-      if (pQueryParamName != null && pQueryParamValues != null && pQueryParamValues.length > 0) {
-        List<String> lValues = new ArrayList<>(pQueryParamValues.length);
-        for (float lNextValue : pQueryParamValues) {
-          lValues.add(String.valueOf(lNextValue));
+      if (pQueryParamName != null) {
+        if (pQueryParamValues != null && pQueryParamValues.length > 0) {
+          List<String> lValues = new ArrayList<>(pQueryParamValues.length);
+          for (float lNextValue : pQueryParamValues) {
+            lValues.add(String.valueOf(lNextValue));
+          }
+          queryParameters.put(pQueryParamName, lValues);
         }
-        queryParameters.put(pQueryParamName, lValues);
         return this;
       }
       else {
-        throw new IllegalArgumentException(
-            "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided");
+        throw new IllegalArgumentException("Parameter 'pQueryParamName' must not be null.");
       }
     }
 
@@ -764,21 +770,22 @@ public class RESTRequest {
      * it.
      * 
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
-     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter may be null or empty.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
     public Builder setQueryParameter( String pQueryParamName, double... pQueryParamValues ) {
-      if (pQueryParamName != null && pQueryParamValues != null && pQueryParamValues.length > 0) {
-        List<String> lValues = new ArrayList<>(pQueryParamValues.length);
-        for (double lNextValue : pQueryParamValues) {
-          lValues.add(String.valueOf(lNextValue));
+      if (pQueryParamName != null) {
+        if (pQueryParamValues != null && pQueryParamValues.length > 0) {
+          List<String> lValues = new ArrayList<>(pQueryParamValues.length);
+          for (double lNextValue : pQueryParamValues) {
+            lValues.add(String.valueOf(lNextValue));
+          }
+          queryParameters.put(pQueryParamName, lValues);
         }
-        queryParameters.put(pQueryParamName, lValues);
         return this;
       }
       else {
-        throw new IllegalArgumentException(
-            "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided");
+        throw new IllegalArgumentException("Parameter 'pQueryParamName' must not be null.");
       }
     }
 
@@ -788,21 +795,22 @@ public class RESTRequest {
      * it.
      * 
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
-     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter may be null or empty.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
     public Builder setQueryParameter( String pQueryParamName, char... pQueryParamValues ) {
-      if (pQueryParamName != null && pQueryParamValues != null && pQueryParamValues.length > 0) {
-        List<String> lValues = new ArrayList<>(pQueryParamValues.length);
-        for (char lNextValue : pQueryParamValues) {
-          lValues.add(String.valueOf(lNextValue));
+      if (pQueryParamName != null) {
+        if (pQueryParamValues != null && pQueryParamValues.length > 0) {
+          List<String> lValues = new ArrayList<>(pQueryParamValues.length);
+          for (char lNextValue : pQueryParamValues) {
+            lValues.add(String.valueOf(lNextValue));
+          }
+          queryParameters.put(pQueryParamName, lValues);
         }
-        queryParameters.put(pQueryParamName, lValues);
         return this;
       }
       else {
-        throw new IllegalArgumentException(
-            "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided");
+        throw new IllegalArgumentException("Parameter 'pQueryParamName' must not be null.");
       }
     }
 
@@ -812,42 +820,18 @@ public class RESTRequest {
      * it.
      * 
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
-     * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter may be null or empty.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
     public Builder setQueryParameter( String pQueryParamName, String... pQueryParamValues ) {
-      if (pQueryParamValues != null) {
-        return this.setQueryParameter(pQueryParamName, Arrays.asList(pQueryParamValues));
-      }
-      else {
-        throw new IllegalArgumentException(
-            "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided");
-      }
-    }
-
-    /**
-     * Method adds the request parameters with the passed name. May be already existing query parameters with the same
-     * name will be extended. Please be aware that for query parameters it is supported to have more than one value for
-     * it.
-     * 
-     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
-     * @param pQueryParamValues Values of the query parameter. The parameter must not be null and must contain at least
-     * one real value.
-     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
-     */
-    public Builder setQueryParameter( String pQueryParamName, Collection<?> pQueryParamValues ) {
-      if (pQueryParamName != null && pQueryParamValues != null && pQueryParamValues.isEmpty() == false) {
-        List<String> lQueryParamValueList;
-        lQueryParamValueList = new ArrayList<>(pQueryParamValues.size());
-        for (Object lNext : pQueryParamValues) {
-          lQueryParamValueList.add(lNext != null ? lNext.toString() : null);
+      if (pQueryParamName != null) {
+        if (pQueryParamValues != null && pQueryParamValues.length > 0) {
+          queryParameters.put(pQueryParamName, Arrays.asList(pQueryParamValues));
         }
-        queryParameters.put(pQueryParamName, lQueryParamValueList);
         return this;
       }
       else {
-        throw new IllegalArgumentException(
-            "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided");
+        throw new IllegalArgumentException("Parameter 'pQueryParamName' must not be null.");
       }
     }
 
@@ -857,17 +841,45 @@ public class RESTRequest {
      * it.
      * 
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
-     * @param pQueryParamValue Value of the query parameter. The parameter must not be null. The parameter will be
-     * converted into a {@link String} using {@link String#toString()}.
+     * @param pQueryParamValues Values of the query parameter. The parameter may be null or empty.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder setQueryParameter( String pQueryParamName, Collection<?> pQueryParamValues ) {
+      if (pQueryParamName != null) {
+        if (pQueryParamValues != null && pQueryParamValues.size() > 0) {
+          List<String> lQueryParamValueList;
+          lQueryParamValueList = new ArrayList<>(pQueryParamValues.size());
+          for (Object lNext : pQueryParamValues) {
+            lQueryParamValueList.add(lNext != null ? lNext.toString() : null);
+          }
+          queryParameters.put(pQueryParamName, lQueryParamValueList);
+        }
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException("Parameter 'pQueryParamName' must not be null.");
+      }
+    }
+
+    /**
+     * Method adds the request parameters with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query parameters it is supported to have more than one value for
+     * it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValue Value of the query parameter. The parameter may be null. The parameter will be converted
+     * into a {@link String} using {@link String#toString()}.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
     public Builder setQueryParameter( String pQueryParamName, Object pQueryParamValue ) {
+      String[] lValues;
       if (pQueryParamValue != null) {
-        return this.setQueryParameter(pQueryParamName, new String[] { pQueryParamValue.toString() });
+        lValues = new String[] { pQueryParamValue.toString() };
       }
       else {
-        throw new IllegalArgumentException("Parameters 'pQueryParamName' and 'pQueryParamValue' must not be null.");
+        lValues = null;
       }
+      return this.setQueryParameter(pQueryParamName, lValues);
     }
 
     /**

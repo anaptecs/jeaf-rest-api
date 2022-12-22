@@ -97,42 +97,28 @@ public class RESTRequestTest {
     assertTrue(lQueryParam.contains("???"));
 
     // Test null handling
-    try {
-      RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q", (String) null);
-      fail();
-    }
-    catch (IllegalArgumentException e) {
-      assertEquals("Parameters 'pQueryParamName' and 'pQueryParamValue' must not be null.", e.getMessage());
-    }
+    lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q",
+        (String) null);
+    assertEquals(0, lBuilder.build().getQueryParameters().size());
 
     try {
       RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter(null, "Hello");
       fail();
     }
     catch (IllegalArgumentException e) {
-      assertEquals(
-          "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided",
-          e.getMessage());
+      assertEquals("Parameter 'pQueryParamName' must not be null.", e.getMessage());
     }
 
-    try {
-      RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q", (String[]) null);
-      fail();
-    }
-    catch (IllegalArgumentException e) {
-      assertEquals(
-          "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided",
-          e.getMessage());
-    }
+    lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q",
+        (String[]) null);
+    assertEquals(0, lBuilder.build().getQueryParameters().size());
 
     try {
       RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter(null, "Hello", "World");
       fail();
     }
     catch (IllegalArgumentException e) {
-      assertEquals(
-          "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided",
-          e.getMessage());
+      assertEquals("Parameter 'pQueryParamName' must not be null.", e.getMessage());
     }
 
     try {
@@ -140,191 +126,111 @@ public class RESTRequestTest {
       fail();
     }
     catch (IllegalArgumentException e) {
-      assertEquals(
-          "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided",
-          e.getMessage());
+      assertEquals("Parameter 'pQueryParamName' must not be null.", e.getMessage());
     }
 
-    try {
-      RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q",
-          (Collection<String>) null);
-      fail();
-    }
-    catch (IllegalArgumentException e) {
-      assertEquals(
-          "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided",
-          e.getMessage());
-    }
+    lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q",
+        (Collection<String>) null);
+    assertEquals(0, lBuilder.build().getQueryParameters().size());
 
-    try {
-      RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q", (boolean[]) null);
-      fail();
-    }
-    catch (IllegalArgumentException e) {
-      assertEquals(
-          "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided",
-          e.getMessage());
-    }
+    lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q",
+        (boolean[]) null);
+    assertEquals(0, lBuilder.build().getQueryParameters().size());
 
     try {
       RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter(null, new boolean[] {});
       fail();
     }
     catch (IllegalArgumentException e) {
-      assertEquals(
-          "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided",
-          e.getMessage());
+      assertEquals("Parameter 'pQueryParamName' must not be null.", e.getMessage());
     }
 
-    try {
-      RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q", (byte[]) null);
-      fail();
-    }
-    catch (IllegalArgumentException e) {
-      assertEquals(
-          "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided",
-          e.getMessage());
-    }
+    lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q",
+        (byte[]) null);
+    assertEquals(0, lBuilder.build().getQueryParameters().size());
 
     try {
       RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter(null, new byte[] {});
       fail();
     }
     catch (IllegalArgumentException e) {
-      assertEquals(
-          "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided",
-          e.getMessage());
+      assertEquals("Parameter 'pQueryParamName' must not be null.", e.getMessage());
     }
 
-    try {
-      RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q", (short[]) null);
-      fail();
-    }
-    catch (IllegalArgumentException e) {
-      assertEquals(
-          "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided",
-          e.getMessage());
-    }
+    lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q",
+        (short[]) null);
+    assertEquals(0, lBuilder.build().getQueryParameters().size());
 
     try {
       RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter(null, new short[] {});
       fail();
     }
     catch (IllegalArgumentException e) {
-      assertEquals(
-          "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided",
-          e.getMessage());
+      assertEquals("Parameter 'pQueryParamName' must not be null.", e.getMessage());
     }
 
-    try {
-      RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q", (int[]) null);
-      fail();
-    }
-    catch (IllegalArgumentException e) {
-      assertEquals(
-          "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided",
-          e.getMessage());
-    }
+    lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q", (int[]) null);
+    assertEquals(0, lBuilder.build().getQueryParameters().size());
 
     try {
       RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter(null, new int[] {});
       fail();
     }
     catch (IllegalArgumentException e) {
-      assertEquals(
-          "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided",
-          e.getMessage());
+      assertEquals("Parameter 'pQueryParamName' must not be null.", e.getMessage());
     }
 
-    try {
-      RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q", (long[]) null);
-      fail();
-    }
-    catch (IllegalArgumentException e) {
-      assertEquals(
-          "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided",
-          e.getMessage());
-    }
+    lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q",
+        (long[]) null);
+    assertEquals(0, lBuilder.build().getQueryParameters().size());
 
     try {
       RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter(null, new long[] {});
       fail();
     }
     catch (IllegalArgumentException e) {
-      assertEquals(
-          "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided",
-          e.getMessage());
+      assertEquals("Parameter 'pQueryParamName' must not be null.", e.getMessage());
     }
 
-    try {
-      RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q", (float[]) null);
-      fail();
-    }
-    catch (IllegalArgumentException e) {
-      assertEquals(
-          "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided",
-          e.getMessage());
-    }
+    lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q",
+        (float[]) null);
+    assertEquals(0, lBuilder.build().getQueryParameters().size());
 
     try {
       RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter(null, new float[] {});
       fail();
     }
     catch (IllegalArgumentException e) {
-      assertEquals(
-          "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided",
-          e.getMessage());
+      assertEquals("Parameter 'pQueryParamName' must not be null.", e.getMessage());
     }
 
-    try {
-      RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q", (double[]) null);
-      fail();
-    }
-    catch (IllegalArgumentException e) {
-      assertEquals(
-          "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided",
-          e.getMessage());
-    }
+    lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q",
+        (double[]) null);
+    assertEquals(0, lBuilder.build().getQueryParameters().size());
 
     try {
       RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter(null, new double[] {});
       fail();
     }
     catch (IllegalArgumentException e) {
-      assertEquals(
-          "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided",
-          e.getMessage());
+      assertEquals("Parameter 'pQueryParamName' must not be null.", e.getMessage());
     }
 
-    try {
-      RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q", (char[]) null);
-      fail();
-    }
-    catch (IllegalArgumentException e) {
-      assertEquals(
-          "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided",
-          e.getMessage());
-    }
+    lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q",
+        (char[]) null);
+    assertEquals(0, lBuilder.build().getQueryParameters().size());
 
     try {
       RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter(null, new char[] {});
       fail();
     }
     catch (IllegalArgumentException e) {
-      assertEquals(
-          "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided",
-          e.getMessage());
+      assertEquals("Parameter 'pQueryParamName' must not be null.", e.getMessage());
     }
 
-    try {
-      RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q", new String[] {});
-      fail();
-    }
-    catch (IllegalArgumentException e) {
-      assertEquals(
-          "Parameters 'pQueryParamName' and 'pQueryParamValues' must not be null and at least one value for a query parameter must be provided",
-          e.getMessage());
-    }
+    lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q",
+        new String[] {});
+    assertEquals(0, lBuilder.build().getQueryParameters().size());
 
     lBuilder = RESTRequest.builder(Integer.class, HttpMethod.PATCH, ContentType.JSON);
     assertEquals(lBuilder, lBuilder.setQueryParameter("boolean", true, false));
