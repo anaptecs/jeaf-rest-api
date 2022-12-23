@@ -789,6 +789,16 @@ public class RESTRequestTest {
     assertEquals(lBuilder, lBuilder.setHeader("float", (Float) null));
     assertEquals(lBuilder, lBuilder.setHeader("character", (Character) null));
 
+    lBuilder = RESTRequest.builder(Integer.class, HttpMethod.PATCH, ContentType.JSON);
+    assertEquals(lBuilder, lBuilder.setHeader("boolean", (boolean[]) null));
+    assertEquals(lBuilder, lBuilder.setHeader("byte", (byte[]) null));
+    assertEquals(lBuilder, lBuilder.setHeader("short", (short[]) null));
+    assertEquals(lBuilder, lBuilder.setHeader("integer", (int[]) null));
+    assertEquals(lBuilder, lBuilder.setHeader("long", (long[]) null));
+    assertEquals(lBuilder, lBuilder.setHeader("double", (double[]) null));
+    assertEquals(lBuilder, lBuilder.setHeader("float", (float[]) null));
+    assertEquals(lBuilder, lBuilder.setHeader("character", (char[]) null));
+
     lRequest = lBuilder.build();
     assertEquals(Integer.class, lRequest.getServiceClass());
     assertEquals(HttpMethod.PATCH, lRequest.getHttpMethod());
