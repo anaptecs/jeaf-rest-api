@@ -29,6 +29,10 @@ public class RESTRequest {
    */
   private static final String DELIMITER = ", ";
 
+  private static final String HEADER_NAME_NULL_ERROR = "Parameter 'pHeaderName' must not be null.";
+
+  private static final String QUERY_PARAM_NAME_NULL_ERROR = "Parameter 'pQueryParamName' must not be null.";
+
   /**
    * Based on the service class a REST executor ({@link RESTRequestExecutor}) is able to resolve the URL of the REST
    * resource that should be called as well as all other configuration parameters.
@@ -141,7 +145,7 @@ public class RESTRequest {
    * 
    * @return {@link Map} All http headers that should be sent as part of the request. The method never returns null.
    * 
-   * @see #getHeaderFields()
+   * @deprecated Please switch to #getHeaderFields()
    */
   @Deprecated
   public Map<String, String> getHeaders( ) {
@@ -338,7 +342,7 @@ public class RESTRequest {
         return this;
       }
       else {
-        throw new IllegalArgumentException("Parameter 'pHeaderName' must not be null.");
+        throw new IllegalArgumentException(HEADER_NAME_NULL_ERROR);
       }
     }
 
@@ -367,7 +371,7 @@ public class RESTRequest {
         return this;
       }
       else {
-        throw new IllegalArgumentException("Parameter 'pHeaderName' must not be null.");
+        throw new IllegalArgumentException(HEADER_NAME_NULL_ERROR);
       }
     }
 
@@ -396,7 +400,7 @@ public class RESTRequest {
         return this;
       }
       else {
-        throw new IllegalArgumentException("Parameter 'pHeaderName' must not be null.");
+        throw new IllegalArgumentException(HEADER_NAME_NULL_ERROR);
       }
     }
 
@@ -425,7 +429,7 @@ public class RESTRequest {
         return this;
       }
       else {
-        throw new IllegalArgumentException("Parameter 'pHeaderName' must not be null.");
+        throw new IllegalArgumentException(HEADER_NAME_NULL_ERROR);
       }
     }
 
@@ -454,7 +458,7 @@ public class RESTRequest {
         return this;
       }
       else {
-        throw new IllegalArgumentException("Parameter 'pHeaderName' must not be null.");
+        throw new IllegalArgumentException(HEADER_NAME_NULL_ERROR);
       }
     }
 
@@ -483,7 +487,7 @@ public class RESTRequest {
         return this;
       }
       else {
-        throw new IllegalArgumentException("Parameter 'pHeaderName' must not be null.");
+        throw new IllegalArgumentException(HEADER_NAME_NULL_ERROR);
       }
     }
 
@@ -512,7 +516,7 @@ public class RESTRequest {
         return this;
       }
       else {
-        throw new IllegalArgumentException("Parameter 'pHeaderName' must not be null.");
+        throw new IllegalArgumentException(HEADER_NAME_NULL_ERROR);
       }
     }
 
@@ -541,7 +545,7 @@ public class RESTRequest {
         return this;
       }
       else {
-        throw new IllegalArgumentException("Parameter 'pHeaderName' must not be null.");
+        throw new IllegalArgumentException(HEADER_NAME_NULL_ERROR);
       }
     }
 
@@ -590,7 +594,7 @@ public class RESTRequest {
         return this;
       }
       else {
-        throw new IllegalArgumentException("Parameter 'pHeaderName' must not be null.");
+        throw new IllegalArgumentException(HEADER_NAME_NULL_ERROR);
       }
     }
 
@@ -635,7 +639,7 @@ public class RESTRequest {
         return this;
       }
       else {
-        throw new IllegalArgumentException("Parameter 'pQueryParamName' must not be null.");
+        throw new IllegalArgumentException(QUERY_PARAM_NAME_NULL_ERROR);
       }
     }
 
@@ -660,7 +664,7 @@ public class RESTRequest {
         return this;
       }
       else {
-        throw new IllegalArgumentException("Parameter 'pQueryParamName' must not be null.");
+        throw new IllegalArgumentException(QUERY_PARAM_NAME_NULL_ERROR);
       }
     }
 
@@ -685,7 +689,7 @@ public class RESTRequest {
         return this;
       }
       else {
-        throw new IllegalArgumentException("Parameter 'pQueryParamName' must not be null.");
+        throw new IllegalArgumentException(QUERY_PARAM_NAME_NULL_ERROR);
       }
     }
 
@@ -710,7 +714,7 @@ public class RESTRequest {
         return this;
       }
       else {
-        throw new IllegalArgumentException("Parameter 'pQueryParamName' must not be null.");
+        throw new IllegalArgumentException(QUERY_PARAM_NAME_NULL_ERROR);
       }
     }
 
@@ -735,7 +739,7 @@ public class RESTRequest {
         return this;
       }
       else {
-        throw new IllegalArgumentException("Parameter 'pQueryParamName' must not be null.");
+        throw new IllegalArgumentException(QUERY_PARAM_NAME_NULL_ERROR);
       }
     }
 
@@ -760,7 +764,7 @@ public class RESTRequest {
         return this;
       }
       else {
-        throw new IllegalArgumentException("Parameter 'pQueryParamName' must not be null.");
+        throw new IllegalArgumentException(QUERY_PARAM_NAME_NULL_ERROR);
       }
     }
 
@@ -785,7 +789,7 @@ public class RESTRequest {
         return this;
       }
       else {
-        throw new IllegalArgumentException("Parameter 'pQueryParamName' must not be null.");
+        throw new IllegalArgumentException(QUERY_PARAM_NAME_NULL_ERROR);
       }
     }
 
@@ -810,7 +814,7 @@ public class RESTRequest {
         return this;
       }
       else {
-        throw new IllegalArgumentException("Parameter 'pQueryParamName' must not be null.");
+        throw new IllegalArgumentException(QUERY_PARAM_NAME_NULL_ERROR);
       }
     }
 
@@ -831,7 +835,7 @@ public class RESTRequest {
         return this;
       }
       else {
-        throw new IllegalArgumentException("Parameter 'pQueryParamName' must not be null.");
+        throw new IllegalArgumentException(QUERY_PARAM_NAME_NULL_ERROR);
       }
     }
 
@@ -857,7 +861,7 @@ public class RESTRequest {
         return this;
       }
       else {
-        throw new IllegalArgumentException("Parameter 'pQueryParamName' must not be null.");
+        throw new IllegalArgumentException(QUERY_PARAM_NAME_NULL_ERROR);
       }
     }
 
@@ -890,6 +894,8 @@ public class RESTRequest {
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
      * @param pQueryParamValue Value of the query parameter. The parameter must not be null.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     * 
+     * @deprecated Please use setQueryParameter(...) instead
      */
     @Deprecated
     public Builder addQueryParam( String pQueryParamName, Object pQueryParamValue ) {
@@ -911,6 +917,8 @@ public class RESTRequest {
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
      * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     * 
+     * @deprecated Please use setQueryParameter(...) instead
      */
     @Deprecated
     public Builder addQueryParam( String pQueryParamName, Collection<?> pQueryParamValues ) {
@@ -936,6 +944,8 @@ public class RESTRequest {
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
      * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     * 
+     * @deprecated Please use setQueryParameter(...) instead
      */
     @Deprecated
     public Builder addQueryParam( String pQueryParamName, String... pQueryParamValues ) {
@@ -959,6 +969,8 @@ public class RESTRequest {
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
      * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     * 
+     * @deprecated Please use setQueryParameter(...) instead
      */
     @Deprecated
     public Builder addQueryParam( String pQueryParamName, boolean... pQueryParamValues ) {
@@ -982,6 +994,8 @@ public class RESTRequest {
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
      * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     * 
+     * @deprecated Please use setQueryParameter(...) instead
      */
     @Deprecated
     public Builder addQueryParam( String pQueryParamName, byte... pQueryParamValues ) {
@@ -1005,6 +1019,8 @@ public class RESTRequest {
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
      * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     * 
+     * @deprecated Please use setQueryParameter(...) instead
      */
     @Deprecated
     public Builder addQueryParam( String pQueryParamName, short... pQueryParamValues ) {
@@ -1028,6 +1044,8 @@ public class RESTRequest {
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
      * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     * 
+     * @deprecated Please use setQueryParameter(...) instead
      */
     @Deprecated
     public Builder addQueryParam( String pQueryParamName, int... pQueryParamValues ) {
@@ -1051,6 +1069,8 @@ public class RESTRequest {
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
      * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     * 
+     * @deprecated Please use setQueryParameter(...) instead
      */
     @Deprecated
     public Builder addQueryParam( String pQueryParamName, long... pQueryParamValues ) {
@@ -1074,6 +1094,8 @@ public class RESTRequest {
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
      * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     * 
+     * @deprecated Please use setQueryParameter(...) instead
      */
     @Deprecated
     public Builder addQueryParam( String pQueryParamName, float... pQueryParamValues ) {
@@ -1097,6 +1119,8 @@ public class RESTRequest {
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
      * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     * 
+     * @deprecated Please use setQueryParameter(...) instead
      */
     @Deprecated
     public Builder addQueryParam( String pQueryParamName, double... pQueryParamValues ) {
@@ -1120,6 +1144,8 @@ public class RESTRequest {
      * @param pQueryParamName Name of the query parameter. The parameter must not be null.
      * @param pQueryParamValues Values of the query parameter. The parameter must not be null.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     * 
+     * @deprecated Please use setQueryParameter(...) instead
      */
     @Deprecated
     public Builder addQueryParam( String pQueryParamName, char... pQueryParamValues ) {
