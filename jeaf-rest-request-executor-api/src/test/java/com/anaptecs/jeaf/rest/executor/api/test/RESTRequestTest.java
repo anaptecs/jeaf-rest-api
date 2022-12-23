@@ -266,6 +266,28 @@ public class RESTRequestTest {
     assertEquals("A", lQueryParameters.get("character").get(0));
     assertEquals("B", lQueryParameters.get("character").get(1));
 
+    lBuilder = RESTRequest.builder(Integer.class, HttpMethod.PATCH, ContentType.JSON);
+    assertEquals(lBuilder, lBuilder.setQueryParameter("boolean", (boolean[]) null));
+    assertEquals(lBuilder, lBuilder.setQueryParameter("byte", (byte[]) null));
+    assertEquals(lBuilder, lBuilder.setQueryParameter("short", (short[]) null));
+    assertEquals(lBuilder, lBuilder.setQueryParameter("integer", (int[]) null));
+    assertEquals(lBuilder, lBuilder.setQueryParameter("long", (long[]) null));
+    assertEquals(lBuilder, lBuilder.setQueryParameter("double", (double[]) null));
+    assertEquals(lBuilder, lBuilder.setQueryParameter("float", (float[]) null));
+    assertEquals(lBuilder, lBuilder.setQueryParameter("character", (char[]) null));
+    assertEquals(0, lBuilder.build().getQueryParameters().size());
+
+    lBuilder = RESTRequest.builder(Integer.class, HttpMethod.PATCH, ContentType.JSON);
+    assertEquals(lBuilder, lBuilder.setQueryParameter("boolean", new boolean[] {}));
+    assertEquals(lBuilder, lBuilder.setQueryParameter("byte", new byte[] {}));
+    assertEquals(lBuilder, lBuilder.setQueryParameter("short", new short[] {}));
+    assertEquals(lBuilder, lBuilder.setQueryParameter("integer", new int[] {}));
+    assertEquals(lBuilder, lBuilder.setQueryParameter("long", new long[] {}));
+    assertEquals(lBuilder, lBuilder.setQueryParameter("double", new double[] {}));
+    assertEquals(lBuilder, lBuilder.setQueryParameter("float", new float[] {}));
+    assertEquals(lBuilder, lBuilder.setQueryParameter("character", new char[] {}));
+    assertEquals(0, lBuilder.build().getQueryParameters().size());
+
   }
 
   @Deprecated
@@ -788,6 +810,7 @@ public class RESTRequestTest {
     assertEquals(lBuilder, lBuilder.setHeader("double", (Double) null));
     assertEquals(lBuilder, lBuilder.setHeader("float", (Float) null));
     assertEquals(lBuilder, lBuilder.setHeader("character", (Character) null));
+    assertEquals(8, lBuilder.build().getHeaderFields().size());
 
     lBuilder = RESTRequest.builder(Integer.class, HttpMethod.PATCH, ContentType.JSON);
     assertEquals(lBuilder, lBuilder.setHeader("boolean", (boolean[]) null));
@@ -798,6 +821,7 @@ public class RESTRequestTest {
     assertEquals(lBuilder, lBuilder.setHeader("double", (double[]) null));
     assertEquals(lBuilder, lBuilder.setHeader("float", (float[]) null));
     assertEquals(lBuilder, lBuilder.setHeader("character", (char[]) null));
+    assertEquals(8, lBuilder.build().getHeaderFields().size());
 
     lRequest = lBuilder.build();
     assertEquals(Integer.class, lRequest.getServiceClass());
@@ -822,6 +846,7 @@ public class RESTRequestTest {
     assertEquals(lBuilder, lBuilder.setHeader("double", new double[] {}));
     assertEquals(lBuilder, lBuilder.setHeader("float", new float[] {}));
     assertEquals(lBuilder, lBuilder.setHeader("character", new char[] {}));
+    assertEquals(8, lBuilder.build().getHeaderFields().size());
 
     lRequest = lBuilder.build();
     assertEquals(Integer.class, lRequest.getServiceClass());
