@@ -850,7 +850,7 @@ public class RESTRequest {
      */
     public Builder setQueryParameter( String pQueryParamName, Collection<?> pQueryParamValues ) {
       if (pQueryParamName != null) {
-        if (pQueryParamValues != null && pQueryParamValues.size() > 0) {
+        if (pQueryParamValues != null && pQueryParamValues.isEmpty() == false) {
           List<String> lQueryParamValueList;
           lQueryParamValueList = new ArrayList<>(pQueryParamValues.size());
           for (Object lNext : pQueryParamValues) {
