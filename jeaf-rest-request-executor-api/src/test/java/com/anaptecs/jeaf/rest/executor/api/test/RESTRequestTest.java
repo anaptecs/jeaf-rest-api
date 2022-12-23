@@ -10,6 +10,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -286,8 +287,23 @@ public class RESTRequestTest {
     assertEquals(lBuilder, lBuilder.setQueryParameter("double", new double[] {}));
     assertEquals(lBuilder, lBuilder.setQueryParameter("float", new float[] {}));
     assertEquals(lBuilder, lBuilder.setQueryParameter("character", new char[] {}));
+    assertEquals(lBuilder, lBuilder.setQueryParameter("strings", new ArrayList<String>()));
     assertEquals(0, lBuilder.build().getQueryParameters().size());
 
+    List<String> lStringLists = new ArrayList<>();
+    lStringLists.add("Hello");
+    lStringLists.add(null);
+    lStringLists.add("World");
+    lBuilder = RESTRequest.builder(Integer.class, HttpMethod.PATCH, ContentType.JSON);
+    assertEquals(lBuilder, lBuilder.setQueryParameter("strings", lStringLists));
+    assertEquals("[Hello, World]", lBuilder.build().getQueryParameters().get("strings").toString());
+
+    lStringLists = new ArrayList<>();
+    lStringLists.add(null);
+    lStringLists.add(null);
+    lBuilder = RESTRequest.builder(Integer.class, HttpMethod.PATCH, ContentType.JSON);
+    assertEquals(lBuilder, lBuilder.setQueryParameter("strings", lStringLists));
+    assertEquals(0, lBuilder.build().getQueryParameters().size());
   }
 
   @Deprecated

@@ -854,9 +854,13 @@ public class RESTRequest {
           List<String> lQueryParamValueList;
           lQueryParamValueList = new ArrayList<>(pQueryParamValues.size());
           for (Object lNext : pQueryParamValues) {
-            lQueryParamValueList.add(lNext != null ? lNext.toString() : null);
+            if (lNext != null) {
+              lQueryParamValueList.add(lNext.toString());
+            }
           }
-          queryParameters.put(pQueryParamName, lQueryParamValueList);
+          if (lQueryParamValueList.isEmpty() == false) {
+            queryParameters.put(pQueryParamName, lQueryParamValueList);
+          }
         }
         return this;
       }
