@@ -31,6 +31,7 @@
 	<modules>
 		<module>jeaf-rest-request-executor-api</module>
 		<module>jeaf-rest-request-executor-service-provider</module>
+		<module>jeaf-rest-resource-api</module>
 		<module>jeaf-rest-composite-type-api</module>
 		<module>jeaf-rest-composite-type-service-provider</module>
 	</modules>
