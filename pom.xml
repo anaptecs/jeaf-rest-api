@@ -11,7 +11,7 @@
 
 	<groupId>com.anaptecs.jeaf.rest</groupId>
 	<artifactId>jeaf-rest-api-project</artifactId>
-	<version>1.6.4</version>
+	<version>1.6.5-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>JEAF REST API Project</name>
 	<description>JEAF REST API contains a set of classes that provide a common abstraction for topics that are connected with REST APIs.</description>
@@ -21,7 +21,7 @@
 		<connection>scm:git:https://bitbucket.org/anaptecs/jeaf-rest-api.git</connection>
 		<developerConnection>scm:git:https://bitbucket.org/anaptecs/jeaf-rest-api.git</developerConnection>
 		<url>https://bitbucket.org/anaptecs/jeaf-rest-api.git</url>
-		<tag>jeaf-rest-api-project-1.6.4</tag>
+		<tag>HEAD</tag>
 	</scm>
 	
 	<properties>
