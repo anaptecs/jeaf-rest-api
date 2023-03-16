@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.anaptecs.jeaf.rest</groupId>
+		<artifactId>jeaf-rest-api-project</artifactId>
+		<version>1.6.5-SNAPSHOT</version>
+	</parent>
+
+	<name>JEAF REST Resource Service Provider</name>
+	<artifactId>jeaf-rest-resource-service-provider</artifactId>
+	<packaging>jar</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.anaptecs.jeaf.rest</groupId>
+			<artifactId>jeaf-rest-resource-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.anaptecs.jeaf.core</groupId>
+			<artifactId>jeaf-core-api</artifactId>
+			<version>${jeaf.core.api.version}</version>
+		</dependency>
+		
+	</dependencies>
+</project>
