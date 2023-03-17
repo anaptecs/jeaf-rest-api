@@ -11,19 +11,21 @@ public interface ValidationExecutor {
    * Method validates the passed request objects. It is expected that implementations throw a runtime exception that
    * describes all the validations that failed.
    * 
-   * @param pRequestObject Request object that should be validated. The parameter may be null.
    * @param pService Class object representing the service to which the passed request object belongs to. The parameter
    * must not be null.
+   * @param pRequestParameters All request parameters that should be validated. The parameter may be null. Please be
+   * aware that <code>pRequestParameters</code> might contain a mixture of different types including Java collections
+   * classes, primitive arrays etc.
    */
-  void validateRequest( Object pRequestObject, Class<?> pService );
+  void validateRequest( Class<?> pService, Object... pRequestParameters );
 
   /**
    * Method validates the passed response object. It is expected that implementations throw a runtime exception that
    * describes all the validations that failed.
    * 
-   * @param pResponseObject Response Request object that should be validated. The parameter may be null.
    * @param pService Class object representing the service to which the passed request object belongs to. The parameter
    * must not be null.
+   * @param pResponseObject Response object that should be validated. The parameter may be null.
    */
-  void validateResponse( Object pResponseObject, Class<?> pService );
+  void validateResponse( Class<?> pService, Object pResponseObject );
 }
