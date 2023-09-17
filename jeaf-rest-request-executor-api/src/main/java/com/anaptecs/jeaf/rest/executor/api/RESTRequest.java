@@ -575,7 +575,8 @@ public class RESTRequest {
      * 
      * @param pHeaderName Name of the header. The parameter must not be null.
      * @param pHeaderValues Header values that should be set. The parameter may be null. All passed values will be
-     * converted into a {@link String} using {@link String#toString()}.
+     * converted into a {@link String} using {@link String#toString()}. <code>null</code> values inside the collection
+     * will be ignored.
      * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
      */
     public Builder setHeader( String pHeaderName, Collection<?> pHeaderValues ) {
@@ -584,7 +585,41 @@ public class RESTRequest {
         if (pHeaderValues != null) {
           lValues = new ArrayList<>(pHeaderValues.size());
           for (Object lNext : pHeaderValues) {
-            lValues.add(lNext.toString());
+            if (lNext != null) {
+              lValues.add(lNext.toString());
+            }
+          }
+        }
+        else {
+          lValues = null;
+        }
+        headerFields.put(pHeaderName, lValues);
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException(HEADER_NAME_NULL_ERROR);
+      }
+    }
+
+    /**
+     * Method sets the http request header with the passed name. May be already existing header with the same name will
+     * be overwritten. Please be aware that for header fields it is supported to have more than one value for it.
+     * 
+     * @param pHeaderName Name of the header. The parameter must not be null.
+     * @param pHeaderValues Header values that should be set. The parameter may be null. All passed values will be
+     * converted into a {@link String} using {@link String#toString()}. <code>null</code> values inside the array will
+     * be ignored.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder setHeader( String pHeaderName, Object[] pHeaderValues ) {
+      if (pHeaderName != null) {
+        List<String> lValues;
+        if (pHeaderValues != null) {
+          lValues = new ArrayList<>(pHeaderValues.length);
+          for (Object lNext : pHeaderValues) {
+            if (lNext != null) {
+              lValues.add(lNext.toString());
+            }
           }
         }
         else {
@@ -853,6 +888,36 @@ public class RESTRequest {
         if (pQueryParamValues != null && pQueryParamValues.isEmpty() == false) {
           List<String> lQueryParamValueList;
           lQueryParamValueList = new ArrayList<>(pQueryParamValues.size());
+          for (Object lNext : pQueryParamValues) {
+            if (lNext != null) {
+              lQueryParamValueList.add(lNext.toString());
+            }
+          }
+          if (lQueryParamValueList.isEmpty() == false) {
+            queryParameters.put(pQueryParamName, lQueryParamValueList);
+          }
+        }
+        return this;
+      }
+      else {
+        throw new IllegalArgumentException(QUERY_PARAM_NAME_NULL_ERROR);
+      }
+    }
+
+    /**
+     * Method adds the request parameters with the passed name. May be already existing query parameters with the same
+     * name will be extended. Please be aware that for query parameters it is supported to have more than one value for
+     * it.
+     * 
+     * @param pQueryParamName Name of the query parameter. The parameter must not be null.
+     * @param pQueryParamValues Values of the query parameter. The parameter may be null or empty.
+     * @return {@link Builder} Builder object to concatenate calls to builder. The method never returns null.
+     */
+    public Builder setQueryParameter( String pQueryParamName, Object[] pQueryParamValues ) {
+      if (pQueryParamName != null) {
+        if (pQueryParamValues != null && pQueryParamValues.length > 0) {
+          List<String> lQueryParamValueList;
+          lQueryParamValueList = new ArrayList<>(pQueryParamValues.length);
           for (Object lNext : pQueryParamValues) {
             if (lNext != null) {
               lQueryParamValueList.add(lNext.toString());

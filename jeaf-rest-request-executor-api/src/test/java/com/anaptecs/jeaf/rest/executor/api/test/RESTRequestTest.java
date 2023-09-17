@@ -26,6 +26,9 @@ import com.anaptecs.jeaf.rest.executor.api.RESTRequest;
 import com.anaptecs.jeaf.rest.executor.api.RESTRequest.Builder;
 
 public class RESTRequestTest {
+  private enum Color {
+    RED, GREEN, WHITE;
+  }
 
   @Test
   void testQueryParams( ) {
@@ -98,8 +101,8 @@ public class RESTRequestTest {
     assertTrue(lQueryParam.contains("???"));
 
     // Test null handling
-    lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q",
-        (String) null);
+    lBuilder =
+        RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q", (String) null);
     assertEquals(0, lBuilder.build().getQueryParameters().size());
 
     try {
@@ -110,8 +113,8 @@ public class RESTRequestTest {
       assertEquals("Parameter 'pQueryParamName' must not be null.", e.getMessage());
     }
 
-    lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q",
-        (String[]) null);
+    lBuilder =
+        RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q", (String[]) null);
     assertEquals(0, lBuilder.build().getQueryParameters().size());
 
     try {
@@ -134,8 +137,8 @@ public class RESTRequestTest {
         (Collection<String>) null);
     assertEquals(0, lBuilder.build().getQueryParameters().size());
 
-    lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q",
-        (boolean[]) null);
+    lBuilder =
+        RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q", (boolean[]) null);
     assertEquals(0, lBuilder.build().getQueryParameters().size());
 
     try {
@@ -146,8 +149,8 @@ public class RESTRequestTest {
       assertEquals("Parameter 'pQueryParamName' must not be null.", e.getMessage());
     }
 
-    lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q",
-        (byte[]) null);
+    lBuilder =
+        RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q", (byte[]) null);
     assertEquals(0, lBuilder.build().getQueryParameters().size());
 
     try {
@@ -158,8 +161,8 @@ public class RESTRequestTest {
       assertEquals("Parameter 'pQueryParamName' must not be null.", e.getMessage());
     }
 
-    lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q",
-        (short[]) null);
+    lBuilder =
+        RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q", (short[]) null);
     assertEquals(0, lBuilder.build().getQueryParameters().size());
 
     try {
@@ -181,8 +184,8 @@ public class RESTRequestTest {
       assertEquals("Parameter 'pQueryParamName' must not be null.", e.getMessage());
     }
 
-    lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q",
-        (long[]) null);
+    lBuilder =
+        RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q", (long[]) null);
     assertEquals(0, lBuilder.build().getQueryParameters().size());
 
     try {
@@ -193,8 +196,8 @@ public class RESTRequestTest {
       assertEquals("Parameter 'pQueryParamName' must not be null.", e.getMessage());
     }
 
-    lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q",
-        (float[]) null);
+    lBuilder =
+        RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q", (float[]) null);
     assertEquals(0, lBuilder.build().getQueryParameters().size());
 
     try {
@@ -205,8 +208,8 @@ public class RESTRequestTest {
       assertEquals("Parameter 'pQueryParamName' must not be null.", e.getMessage());
     }
 
-    lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q",
-        (double[]) null);
+    lBuilder =
+        RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q", (double[]) null);
     assertEquals(0, lBuilder.build().getQueryParameters().size());
 
     try {
@@ -217,8 +220,8 @@ public class RESTRequestTest {
       assertEquals("Parameter 'pQueryParamName' must not be null.", e.getMessage());
     }
 
-    lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q",
-        (char[]) null);
+    lBuilder =
+        RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q", (char[]) null);
     assertEquals(0, lBuilder.build().getQueryParameters().size());
 
     try {
@@ -229,8 +232,8 @@ public class RESTRequestTest {
       assertEquals("Parameter 'pQueryParamName' must not be null.", e.getMessage());
     }
 
-    lBuilder = RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q",
-        new String[] {});
+    lBuilder =
+        RESTRequest.builder(String.class, HttpMethod.GET, ContentType.JSON).setQueryParameter("q", new String[] {});
     assertEquals(0, lBuilder.build().getQueryParameters().size());
 
     lBuilder = RESTRequest.builder(Integer.class, HttpMethod.PATCH, ContentType.JSON);
@@ -792,6 +795,7 @@ public class RESTRequestTest {
     assertEquals(lBuilder, lBuilder.setHeader("double", (double) 123456789.1234, (double) 47.11));
     assertEquals(lBuilder, lBuilder.setHeader("float", (float) 1239.1234, (float) 88.99));
     assertEquals(lBuilder, lBuilder.setHeader("character", 'A', 'B'));
+    assertEquals(lBuilder, lBuilder.setHeader("enum", new Color[] { Color.GREEN, Color.WHITE }));
 
     lRequest = lBuilder.build();
     assertEquals(Integer.class, lRequest.getServiceClass());
@@ -815,6 +819,8 @@ public class RESTRequestTest {
     assertEquals("88.99", lHeaders.get("float").get(1));
     assertEquals("A", lHeaders.get("character").get(0));
     assertEquals("B", lHeaders.get("character").get(1));
+    assertEquals("GREEN", lHeaders.get("enum").get(0));
+    assertEquals("WHITE", lHeaders.get("enum").get(1));
 
     // Test null handling for header values
     lBuilder = RESTRequest.builder(Integer.class, HttpMethod.PATCH, ContentType.JSON);
@@ -837,7 +843,8 @@ public class RESTRequestTest {
     assertEquals(lBuilder, lBuilder.setHeader("double", (double[]) null));
     assertEquals(lBuilder, lBuilder.setHeader("float", (float[]) null));
     assertEquals(lBuilder, lBuilder.setHeader("character", (char[]) null));
-    assertEquals(8, lBuilder.build().getHeaderFields().size());
+    assertEquals(lBuilder, lBuilder.setHeader("enum", (Object[]) null));
+    assertEquals(9, lBuilder.build().getHeaderFields().size());
 
     lRequest = lBuilder.build();
     assertEquals(Integer.class, lRequest.getServiceClass());
@@ -852,6 +859,7 @@ public class RESTRequestTest {
     assertEquals(null, lHeaders.get("double"));
     assertEquals(null, lHeaders.get("float"));
     assertEquals(null, lHeaders.get("character"));
+    assertEquals(null, lHeaders.get("enum"));
 
     lBuilder = RESTRequest.builder(Integer.class, HttpMethod.PATCH, ContentType.JSON);
     assertEquals(lBuilder, lBuilder.setHeader("boolean", new boolean[] {}));
@@ -937,6 +945,13 @@ public class RESTRequestTest {
     }
     try {
       lBuilder.setHeader(null, (Character) null);
+      fail();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals("Parameter 'pHeaderName' must not be null.", e.getMessage());
+    }
+    try {
+      lBuilder.setHeader(null, (Object[]) null);
       fail();
     }
     catch (IllegalArgumentException e) {
