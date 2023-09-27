@@ -7,6 +7,7 @@ package com.anaptecs.jeaf.rest.executor.api;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -348,7 +349,10 @@ public class RESTRequest {
 
     /**
      * Method sets the http request header with the passed name. May be already existing header with the same name will
-     * be overwritten. Please be aware that for header fields it is supported to have more than one value for it.
+     * be overwritten.
+     * 
+     * Please be aware that in opposite to all other <code>setHeader(...)</code> operation this one here does not treat
+     * the passed array as array. Instead byte arrays will be encoded to base 64 and stored as simple strings.
      * 
      * @param pHeaderName Name of the header. The parameter must not be null.
      * @param pHeaderValues Header values that should be set. The parameter may be null. All passed values will be
@@ -359,9 +363,14 @@ public class RESTRequest {
       if (pHeaderName != null) {
         List<String> lValues;
         if (pHeaderValues != null && pHeaderValues.length > 0) {
-          lValues = new ArrayList<>(pHeaderValues.length);
-          for (byte lNextValue : pHeaderValues) {
-            lValues.add(String.valueOf(lNextValue));
+          // If it is just a single byte then we assume that really a byte is meant.
+          if (pHeaderValues.length == 1) {
+            lValues = List.of(String.valueOf(pHeaderValues[0]));
+          }
+          // In case of a "real" byte array we do a base 64 encoding.
+          else {
+            String lBase64 = Base64.getEncoder().encodeToString(pHeaderValues);
+            lValues = List.of(lBase64);
           }
         }
         else {

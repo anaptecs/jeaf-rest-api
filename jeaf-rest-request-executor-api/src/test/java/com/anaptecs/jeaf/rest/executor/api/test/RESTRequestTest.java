@@ -10,6 +10,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -663,6 +664,13 @@ public class RESTRequestTest {
     assertEquals(null, lRequest.getHeaders().get("My-Header"));
     assertEquals(null, lRequest.getHeaderFields().get("My-Header"));
 
+    // Test Base64 conversion of byte arrays
+    byte[] lBytes = "Hello World!Including öäü?ß".getBytes(StandardCharsets.ISO_8859_1);
+    lBuilder = RESTRequest.builder(Integer.class, HttpMethod.POST, ContentType.XML);
+    lBuilder.setHeader("Base-64", lBytes);
+    lRequest = lBuilder.build();
+    assertEquals("SGVsbG8gV29ybGQhSW5jbHVkaW5nIPbk/D/f", lRequest.getHeaderFields().get("Base-64").get(0));
+
     try {
       RESTRequest.builder(Integer.class, HttpMethod.POST, ContentType.XML).setHeader(null, "value");
       fail();
@@ -787,7 +795,7 @@ public class RESTRequestTest {
 
     lBuilder = RESTRequest.builder(Integer.class, HttpMethod.PATCH, ContentType.JSON);
     assertEquals(lBuilder, lBuilder.setHeader("boolean", true, false));
-    assertEquals(lBuilder, lBuilder.setHeader("byte", (byte) 47, (byte) -2));
+    assertEquals(lBuilder, lBuilder.setHeader("byte", (byte) 47));
     assertEquals(lBuilder, lBuilder.setHeader("short", (short) 241, (short) 17));
     assertEquals(lBuilder, lBuilder.setHeader("integer", 47110815, 1234));
     assertEquals(lBuilder, lBuilder.setHeader("int", 123));
@@ -805,7 +813,6 @@ public class RESTRequestTest {
     assertEquals("true", lHeaders.get("boolean").get(0));
     assertEquals("false", lHeaders.get("boolean").get(1));
     assertEquals("47", lHeaders.get("byte").get(0));
-    assertEquals("-2", lHeaders.get("byte").get(1));
     assertEquals("241", lHeaders.get("short").get(0));
     assertEquals("17", lHeaders.get("short").get(1));
     assertEquals("47110815", lHeaders.get("integer").get(0));
@@ -885,12 +892,6 @@ public class RESTRequestTest {
     assertEquals(null, lHeaders.get("double"));
     assertEquals(null, lHeaders.get("float"));
     assertEquals(null, lHeaders.get("character"));
-
-    lBuilder = RESTRequest.builder(Integer.class, HttpMethod.PATCH, ContentType.JSON);
-    assertEquals(lBuilder, lBuilder.setHeader("byte", (byte) 47, (byte) -2));
-    lRequest = lBuilder.build();
-    Map<String, String> lDeprecatedHeaders = lRequest.getHeaders();
-    assertEquals("47, -2", lDeprecatedHeaders.get("byte"));
 
     // Test null handling
     lBuilder = RESTRequest.builder(Integer.class, HttpMethod.PATCH, ContentType.JSON);
