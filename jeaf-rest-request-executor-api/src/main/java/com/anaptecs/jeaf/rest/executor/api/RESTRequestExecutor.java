@@ -39,7 +39,7 @@ public interface RESTRequestExecutor {
    * order to be able to distinguish between successful and failed requests. In case of failed requests an runtime
    * exception is expected to be thrown.
    */
-  public void executeNoResultRequest( RESTRequest pRequest, int pSuccessfulStatusCode );
+  void executeNoResultRequest( RESTRequest pRequest, int pSuccessfulStatusCode );
 
   /**
    * Method executes a HTTP REST request that is expected to return a single non collection object as result.
@@ -54,7 +54,13 @@ public interface RESTRequestExecutor {
    * @deprecated Please use {@link #executeCollectionResultRequest(RESTRequest, int, Class, ObjectType)} instead.
    */
   @Deprecated
-  <T> T executeSingleObjectResultRequest( RESTRequest pRequest, int pSuccessfulStatusCode, Class<T> pTypeClass );
+  default <T> T executeSingleObjectResultRequest( RESTRequest pRequest, int pSuccessfulStatusCode,
+      Class<T> pTypeClass ) {
+
+    // Delegate request to new operation.
+    ObjectType lObjectType = ObjectType.createObjectType(pTypeClass);
+    return this.executeSingleObjectResultRequest(pRequest, pSuccessfulStatusCode, lObjectType);
+  }
 
   /**
    * Method executes a HTTP REST request that is expected to return a single non collection object as result.
@@ -89,8 +95,14 @@ public interface RESTRequestExecutor {
    * @deprecated Please use {@link #executeSingleObjectResultRequest(RESTRequest, int, ObjectType)} instead.
    */
   @Deprecated
-  <T> T executeCollectionResultRequest( RESTRequest pRequest, int pSuccessfulStatusCode, @SuppressWarnings("rawtypes")
-  Class<? extends Collection> pCollectionClass, Class<?> pTypeClass );
+  default <T> T executeCollectionResultRequest( RESTRequest pRequest, int pSuccessfulStatusCode,
+      @SuppressWarnings("rawtypes")
+      Class<? extends Collection> pCollectionClass, Class<?> pTypeClass ) {
+
+    // Delegate request to new operation.
+    ObjectType lObjectType = ObjectType.createObjectType(pTypeClass);
+    return this.executeCollectionResultRequest(pRequest, pSuccessfulStatusCode, pCollectionClass, lObjectType);
+  }
 
   /**
    * Method executes a HTTP request that is expected to return a collection of objects as result.
