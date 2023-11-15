@@ -83,7 +83,8 @@ public interface RESTRequestExecutor {
    * @param pCollectionClass Class object of collection class that should be returned e.g. List. The parameter must not
    * be null.
    * @param pTypeClass Type of the objects that will be inside the collection. The parameter must not be null.
-   * @return T Collection of objects as it was defined by <code>pCollectionClass</code> and <code>pTypeClass</code>
+   * @return {@link Collection} of objects as it was defined by <code>pCollectionClass</code> and
+   * <code>pTypeClass</code>
    * 
    * @deprecated Please use {@link #executeSingleObjectResultRequest(RESTRequest, int, ObjectType)} instead.
    */
@@ -101,7 +102,8 @@ public interface RESTRequestExecutor {
    * @param pCollectionClass Class object of collection class that should be returned e.g. List. The parameter must not
    * be null.
    * @param pObjectType Type of the objects that will be inside the collection. The parameter must not be null.
-   * @return T Collection of objects as it was defined by <code>pCollectionClass</code> and <code>pTypeClass</code>
+   * @return {@link Collection} of objects as it was defined by <code>pCollectionClass</code> and
+   * <code>pObjectType</code>
    */
   default <T> T executeCollectionResultRequest( RESTRequest pRequest, int pSuccessfulStatusCode,
       @SuppressWarnings("rawtypes")
