@@ -37,6 +37,17 @@ public abstract class ObjectType {
   }
 
   /**
+   * Method can be used to create an object type based on a type reference. This is a way to create very flexible
+   * ObjectTypes. However creation of a type reference requires to create an anonymous class.
+   * 
+   * @param pTypeReference {@link TypeReference} representing the type of objects deserialized from JSON.
+   * @return {@link ObjectType} Object representing the type of the created object. The method never returns null.
+   */
+  public static ObjectType createTypeReferenceObjectType( TypeReference<?> pTypeReference ) {
+    return new TypeReferenceObjectType(pTypeReference);
+  }
+
+  /**
    * Constructor is private to block unexpected subclasses.
    */
   private ObjectType( ) {
@@ -77,6 +88,21 @@ public abstract class ObjectType {
 
     public Class<?> getParameterType( ) {
       return parameterType;
+    }
+  }
+
+  /**
+   * Class implements an object type that can be used for any kind of type including nested generics.
+   */
+  public static class TypeReferenceObjectType extends ObjectType {
+    private final TypeReference<?> typeReference;
+
+    public TypeReferenceObjectType( TypeReference<?> pTypeReference ) {
+      typeReference = pTypeReference;
+    }
+
+    public TypeReference<?> getTypeReference( ) {
+      return typeReference;
     }
   }
 }
