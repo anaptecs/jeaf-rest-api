@@ -26,10 +26,12 @@
 	
 	<properties>
 		<jeaf.core.api.version>1.8.0</jeaf.core.api.version>
+		<reactor-core.version>3.6.8</reactor-core.version>
 	</properties>
 	
 	<modules>
 		<module>jeaf-rest-request-executor-api</module>
+		<module>jeaf-rest-request-executor-api-reactive</module>
 		<module>jeaf-rest-request-executor-service-provider</module>
 		<module>jeaf-rest-resource-api</module>
 		<module>jeaf-rest-resource-service-provider</module>
