@@ -7,22 +7,21 @@
 		<version>2.0.0-RC1-SNAPSHOT</version>
 	</parent>
 
-	<name>JEAF REST Composite Type Service Provider</name>
-	<artifactId>jeaf-rest-composite-type-service-provider</artifactId>
+	<name>JEAF REST Request Executor API Reactive</name>
+	<artifactId>jeaf-rest-request-executor-api-reactive</artifactId>
 	<packaging>jar</packaging>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.anaptecs.jeaf.rest</groupId>
-			<artifactId>jeaf-rest-composite-type-api</artifactId>
+			<artifactId>jeaf-rest-request-executor-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
 		<dependency>
-			<groupId>com.anaptecs.jeaf.core</groupId>
-			<artifactId>jeaf-core-api</artifactId>
-			<version>${jeaf.core.api.version}</version>
+			<groupId>io.projectreactor</groupId>
+			<artifactId>reactor-core</artifactId>
+			<version>${reactor-core.version}</version>
 		</dependency>
-		
 	</dependencies>
 </project>

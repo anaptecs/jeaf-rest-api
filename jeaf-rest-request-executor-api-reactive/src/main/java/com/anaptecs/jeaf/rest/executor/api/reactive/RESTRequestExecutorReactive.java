@@ -3,12 +3,17 @@
  * 
  * Copyright 2004 - 2022. All rights reserved.
  */
-package com.anaptecs.jeaf.rest.executor.api;
+package com.anaptecs.jeaf.rest.executor.api.reactive;
 
 import java.util.Collection;
 
+import com.anaptecs.jeaf.rest.executor.api.ObjectType;
+import com.anaptecs.jeaf.rest.executor.api.RESTRequest;
+
+import reactor.core.publisher.Mono;
+
 /**
- * Interface defines an abstraction for synchronous calls to an REST resource. Idea of this interface is to provide a
+ * Interface defines an abstraction for reactive calls to an REST resource. Idea of this interface is to provide a
  * generic interface for REST calls. Providers of this interface can use any kind of http client to execute the REST
  * requests that are received via this interface.
  * 
@@ -28,10 +33,10 @@ import java.util.Collection;
  * 
  * @author JEAF Development Team
  */
-public interface RESTRequestExecutor {
+public interface RESTRequestExecutorReactive {
   /**
-   * Method executes a HTTP REST request that is expected to return no response (aka return type void). The REST
-   * resource that should be called can be resolved using the service class that is defined in the passed request.
+   * Method executes a reactive HTTP REST request that is expected to return no response (aka return type void). The
+   * REST resource that should be called can be resolved using the service class that is defined in the passed request.
    * {@link RESTRequest#getServiceClass()}.
    * 
    * @param pRequest HTTP request that should be executed. The parameter must not be null.
@@ -39,10 +44,10 @@ public interface RESTRequestExecutor {
    * order to be able to distinguish between successful and failed requests. In case of failed requests an runtime
    * exception is expected to be thrown.
    */
-  void executeNoResultRequest( RESTRequest pRequest, int pSuccessfulStatusCode );
+  Mono<Void> executeNoResultRequest( RESTRequest pRequest, int pSuccessfulStatusCode );
 
   /**
-   * Method executes a HTTP REST request that is expected to return a single non collection object as result.
+   * Method executes a reactive HTTP REST request that is expected to return a single non collection object as result.
    * 
    * @param pRequest HTTP request that should be executed. The parameter must not be null.
    * @param pSuccessfulStatusCode HTTP status code that represents a successful call. This status code is required in
@@ -51,11 +56,11 @@ public interface RESTRequestExecutor {
    * @param pObjectType Type of the object that will be returned by the call. The parameter must not be null.
    * @return T Single object as it was defined by <code>pTypeClass</code>
    */
-  <T> T executeSingleObjectResultRequest( RESTRequest pRequest, int pSuccessfulStatusCode,
+  <T> Mono<T> executeSingleObjectResultRequest( RESTRequest pRequest, int pSuccessfulStatusCode,
       ObjectType pObjectType );
 
   /**
-   * Method executes a HTTP request that is expected to return a collection of objects as result.
+   * Method executes a reactive HTTP request that is expected to return a collection of objects as result.
    * 
    * @param pRequest HTTP request that should be executed. The parameter must not be null.
    * @param pSuccessfulStatusCode HTTP status code that represents a successful call. This status code is required in
@@ -67,7 +72,7 @@ public interface RESTRequestExecutor {
    * @return {@link Collection} of objects as it was defined by <code>pCollectionClass</code> and
    * <code>pObjectType</code>
    */
-  <T> T executeCollectionResultRequest( RESTRequest pRequest, int pSuccessfulStatusCode,
+  <T> Mono<T> executeCollectionResultRequest( RESTRequest pRequest, int pSuccessfulStatusCode,
       @SuppressWarnings("rawtypes")
       Class<? extends Collection> pCollectionClass, ObjectType pObjectType );
 }
