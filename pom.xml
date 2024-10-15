@@ -26,7 +26,7 @@
 	
 	<properties>
 		<jeaf.core.api.version>1.8.0</jeaf.core.api.version>
-		<reactor-core.version>3.6.10</reactor-core.version>
+		<reactor-core.version>3.6.11</reactor-core.version>
 	</properties>
 	
 	<modules>
