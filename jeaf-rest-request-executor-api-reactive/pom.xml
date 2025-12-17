@@ -19,8 +19,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>io.projectreactor</groupId>
-			<artifactId>reactor-core</artifactId>
+		    <groupId>io.projectreactor</groupId>
+		    <artifactId>reactor-core</artifactId>
 			<version>${reactor-core.version}</version>
 		</dependency>
 	</dependencies>

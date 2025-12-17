@@ -5,10 +5,10 @@
  */
 package com.anaptecs.jeaf.rest.executor.api.test;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -19,12 +19,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.junit.jupiter.api.Test;
-
 import com.anaptecs.jeaf.rest.executor.api.ContentType;
 import com.anaptecs.jeaf.rest.executor.api.HttpMethod;
 import com.anaptecs.jeaf.rest.executor.api.RESTRequest;
 import com.anaptecs.jeaf.rest.executor.api.RESTRequest.Builder;
+import org.junit.jupiter.api.Test;
 
 public class RESTRequestTest {
   private enum Color {
@@ -244,7 +243,7 @@ public class RESTRequestTest {
     assertEquals(lBuilder, lBuilder.setQueryParameter("integer", 47110815, 1234));
     assertEquals(lBuilder, lBuilder.setQueryParameter("int", 123));
     assertEquals(lBuilder, lBuilder.setQueryParameter("long", (long) 123456789, (long) 12));
-    assertEquals(lBuilder, lBuilder.setQueryParameter("double", (double) 123456789.1234, (double) 47.11));
+    assertEquals(lBuilder, lBuilder.setQueryParameter("double", 123456789.1234, 47.11));
     assertEquals(lBuilder, lBuilder.setQueryParameter("float", (float) 1239.1234, (float) 88.99));
     assertEquals(lBuilder, lBuilder.setQueryParameter("character", 'A', 'B'));
 
@@ -574,7 +573,7 @@ public class RESTRequestTest {
     assertEquals(lBuilder, lBuilder.addQueryParam("integer", 47110815, 1234));
     assertEquals(lBuilder, lBuilder.addQueryParam("int", 123));
     assertEquals(lBuilder, lBuilder.addQueryParam("long", (long) 123456789, (long) 12));
-    assertEquals(lBuilder, lBuilder.addQueryParam("double", (double) 123456789.1234, (double) 47.11));
+    assertEquals(lBuilder, lBuilder.addQueryParam("double", 123456789.1234, 47.11));
     assertEquals(lBuilder, lBuilder.addQueryParam("float", (float) 1239.1234, (float) 88.99));
     assertEquals(lBuilder, lBuilder.addQueryParam("character", 'A', 'B'));
 
@@ -771,10 +770,10 @@ public class RESTRequestTest {
     assertEquals(lBuilder, lBuilder.setHeader("boolean", Boolean.TRUE));
     assertEquals(lBuilder, lBuilder.setHeader("byte", Byte.valueOf((byte) 47)));
     assertEquals(lBuilder, lBuilder.setHeader("short", Short.valueOf((short) 241)));
-    assertEquals(lBuilder, lBuilder.setHeader("integer", Integer.valueOf((int) 47110815)));
+    assertEquals(lBuilder, lBuilder.setHeader("integer", Integer.valueOf(47110815)));
     assertEquals(lBuilder, lBuilder.setHeader("int", 123));
-    assertEquals(lBuilder, lBuilder.setHeader("long", Long.valueOf((long) 123456789)));
-    assertEquals(lBuilder, lBuilder.setHeader("double", Double.valueOf((double) 123456789.1234)));
+    assertEquals(lBuilder, lBuilder.setHeader("long", Long.valueOf(123456789)));
+    assertEquals(lBuilder, lBuilder.setHeader("double", Double.valueOf(123456789.1234)));
     assertEquals(lBuilder, lBuilder.setHeader("float", Float.valueOf((float) 1239.1234)));
     assertEquals(lBuilder, lBuilder.setHeader("character", Character.valueOf('A')));
 
@@ -800,7 +799,7 @@ public class RESTRequestTest {
     assertEquals(lBuilder, lBuilder.setHeader("integer", 47110815, 1234));
     assertEquals(lBuilder, lBuilder.setHeader("int", 123));
     assertEquals(lBuilder, lBuilder.setHeader("long", (long) 123456789, (long) 12));
-    assertEquals(lBuilder, lBuilder.setHeader("double", (double) 123456789.1234, (double) 47.11));
+    assertEquals(lBuilder, lBuilder.setHeader("double", 123456789.1234, 47.11));
     assertEquals(lBuilder, lBuilder.setHeader("float", (float) 1239.1234, (float) 88.99));
     assertEquals(lBuilder, lBuilder.setHeader("character", 'A', 'B'));
     assertEquals(lBuilder, lBuilder.setHeader("enum", new Color[] { Color.GREEN, Color.WHITE }));
