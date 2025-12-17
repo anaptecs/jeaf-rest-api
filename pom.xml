@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.anaptecs.jeaf</groupId>
 		<artifactId>jeaf-module-project-parent</artifactId>
-		<version>1.9.0</version>
+		<version>1.9.1-SNAPSHOT</version>
 	</parent>
 
 	<groupId>com.anaptecs.jeaf.rest</groupId>
@@ -24,6 +24,13 @@
 		<tag>HEAD</tag>
 	</scm>
 	
+	<distributionManagement>
+		<snapshotRepository>
+			<id>github</id>
+			<url>https://maven.pkg.github.com/anaptecs/jeaf-rest-api</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 	<properties>
 		<jeaf.core.api.version>1.8.0</jeaf.core.api.version>
 		<reactor-core.version>3.8.1</reactor-core.version>
