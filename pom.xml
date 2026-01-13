@@ -33,7 +33,7 @@
 
 	<properties>
 		<jeaf.core.api.version>1.8.0</jeaf.core.api.version>
-		<reactor-core.version>3.8.1</reactor-core.version>
+		<reactor-core.version>3.8.2</reactor-core.version>
 	</properties>
 	
 	<modules>
